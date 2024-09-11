@@ -13,13 +13,13 @@
         android:theme="@style/Theme.ListaDeCompras"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.ShoppingListActivity"
+            android:name=".feature.shopping_lists.ShoppingListActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.RegisterActivity"
+            android:name=".feature.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".feature.login.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

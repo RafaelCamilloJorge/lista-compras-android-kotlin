@@ -1,12 +1,11 @@
-package com.example.listadecompras
+package com.example.listadecompras.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

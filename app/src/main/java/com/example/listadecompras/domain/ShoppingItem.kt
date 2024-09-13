@@ -3,18 +3,15 @@ class ShoppingItem(
     var quatity: Int = 0,
     var unity: UnitOfMeasure,
 ) {
-    public getName(): String
-    {
+    public fun getName(): String {
         return name;
     }
 
-    public getQuantity():Int
-    {
+    public fun getQuantity(): Int {
         return quatity;
     }
 
-    public getUnit() : UnitOfMeasure
-    {
+    public fun getUnit(): UnitOfMeasure {
         return unity;
     }
 }

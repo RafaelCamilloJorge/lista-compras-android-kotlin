@@ -14,4 +14,14 @@ enum class Category {
             seeds -> ""
         }
     }
+
+    fun getName(): String {
+        return when (this) {
+            vegetables -> "Vegetais"
+            fish -> "Peixes"
+            meat -> "Carnes"
+            dairy -> "Laticínio"
+            seeds -> "Grãos"
+        }
+    }
 }

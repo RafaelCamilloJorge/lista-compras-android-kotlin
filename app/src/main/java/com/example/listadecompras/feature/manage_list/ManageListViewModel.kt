@@ -30,9 +30,8 @@ class ManageListViewModel {
         shoppingLists.forEach {
             if (it.id == id) {
                 val index: Int = shoppingLists.indexOf(it)
-                shoppingLists.set(index, newList)
+                shoppingLists[index] = newList
             }
         }
     }
-
 }

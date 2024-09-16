@@ -4,6 +4,7 @@ import Category
 import ShoppingItem
 
 class ShoppingList(
+    var id: Int,
     var name: String,
     var image: String,
     var category: Category,

@@ -11,6 +11,9 @@ class ShoppingListViewModel {
         return shoppingLists
     }
 
+    fun addList(shoppingList: ShoppingList) {
+        shoppingLists.add(shoppingList)
+    }
 
     fun searchList(name: String): ShoppingList? {
         return shoppingLists.find { it.name == name }

@@ -1,8 +1,17 @@
 sealed class OnResult<T> {
     data class Success<T>(val data: T) : OnResult<T>()
-    data object SuccessNoData : OnResult<Nothing>()
-
     data class Error<T>(val exception: CustomError) : OnResult<T>()
+
+    fun <R> fold(
+        onSuccess: (T) -> R,
+        onError: (CustomError) -> R
+    ): R {
+        return when (this) {
+            is Success -> onSuccess(data)
+            is Error -> onError(exception)
+            else -> onError(CustomError("Erro de execução"))
+        }
+    }
 }
 
 class CustomError(var error: String?) : Exception(error) {

@@ -1,17 +1,17 @@
 package com.example.listadecompras.feature.shopping_lists
 
-import com.example.listadecompras.presentation.ShoppingList
+import com.example.listadecompras.presentation.ShoppingListOfList
 
 class ShoppingListViewModel {
 
-    private val shoppingLists = mutableListOf<ShoppingList>()
+    private val shoppingListOfLists = mutableListOf<ShoppingListOfList>()
 
-    fun getAllLists(): MutableList<ShoppingList> {
-        return shoppingLists
+    fun getAllLists(): MutableList<ShoppingListOfList> {
+        return shoppingListOfLists
     }
 
-    fun searchList(name: String): List<ShoppingList?> {
-        val resultSearch: List<ShoppingList?> = shoppingLists.sortedBy { it.name.contains(name) }
+    fun searchList(name: String): List<ShoppingListOfList?> {
+        val resultSearch: List<ShoppingListOfList?> = shoppingListOfLists.sortedBy { it.name.contains(name) }
         return resultSearch
     }
 

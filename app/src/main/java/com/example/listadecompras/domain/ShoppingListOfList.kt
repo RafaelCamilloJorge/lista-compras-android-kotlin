@@ -3,7 +3,7 @@ package com.example.listadecompras.presentation
 import Category
 import ShoppingItem
 
-class ShoppingList(
+class ShoppingListOfList(
     var id: Int,
     var name: String,
     var image: String,

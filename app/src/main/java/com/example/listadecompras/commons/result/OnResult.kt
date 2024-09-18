@@ -1,5 +1,7 @@
 sealed class OnResult<T> {
     data class Success<T>(val data: T) : OnResult<T>()
+    data object SuccessNoData : OnResult<Nothing>()
+
     data class Error<T>(val exception: CustomError) : OnResult<T>()
 }
 

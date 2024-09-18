@@ -3,7 +3,7 @@ package com.example.listadecompras.feature.manage_item
 import ShoppingItem
 
 class ManageItemViewModel {
-    private val itemList = mutableListOf<ShoppingItem>()
+    private var itemList = mutableListOf<ShoppingItem>()
 
     fun addItemInList(item: ShoppingItem) {
         itemList.add(item)

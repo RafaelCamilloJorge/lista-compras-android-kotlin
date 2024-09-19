@@ -2,6 +2,7 @@ package com.example.listadecompras.feature.shopping_lists
 
 import ShoppingItem
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +29,15 @@ class ShoppingListActivity : ComponentActivity() {
             ShoppingListOfList(2, "Fim de Semana", R.drawable.ic_exit, list_of_items )
         )
 
-        binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
-        binding.recyclerView.adapter = ShoppingListAdapter(list_of_list)
+        val adapter = ShoppingListAdapter(list_of_list, ::onListItemClicked)
+        val layoutManager = GridLayoutManager(this, 2)
+
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = layoutManager
+
+    }
+
+    private fun onListItemClicked(list_of_list : ShoppingListOfList) {
+        Toast.makeText(this, "Clicou no " + list_of_list.name, Toast.LENGTH_LONG).show()
     }
 }

@@ -8,13 +8,15 @@ import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ListOfItemsBinding
 import com.example.listadecompras.presentation.ShoppingListOfList
 
-
-class ShoppingListAdapter(private val items: List<ShoppingListOfList>) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
+class ShoppingListAdapter(
+    private val items: List<ShoppingListOfList>,
+    private val onClick: (ShoppingListOfList) -> Unit
+) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
 
     inner class ShoppingListViewHolder(val binding: ListOfItemsBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListViewHolder {
-        val binding = ListOfItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListOfItemsBinding.inflate(LayoutInflater.from(parent.context))
         return ShoppingListViewHolder(binding)
     }
 
@@ -23,6 +25,10 @@ class ShoppingListAdapter(private val items: List<ShoppingListOfList>) : Recycle
         with(holder.binding) {
             itemImage.setImageResource(item.image)
             itemTitle.text = item.name
+
+            root.setOnClickListener {
+                onClick(item)
+            }
         }
     }
 

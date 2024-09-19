@@ -8,14 +8,16 @@
     android:layout_height="match_parent"
     tools:context=".feature.shopping_lists.ShoppingListActivity">
 
-    <SearchView
+    <EditText
         android:id="@+id/search_field"
         android:layout_width="300dp"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="Buscar"
+        />
 
     <ImageView
         android:id="@+id/exit_button"
@@ -32,7 +34,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Suas Listas"
+        android:text="SUAS LISTAS"
         android:textStyle="bold"
         android:textSize="30sp"
         app:layout_constraintTop_toBottomOf="@+id/search_field"

@@ -11,11 +11,14 @@ import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityMainBinding
 import com.example.listadecompras.feature.register.RegisterActivity
 import com.example.listadecompras.feature.shopping_lists.ShoppingListActivity
+import com.example.listadecompras.repositories.LoginRepository
+import com.example.listadecompras.repositories.interfaces.ILoginRepository
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val loginViewModel = LoginViewModel()
+    private val _repository = LoginRepository()
+    private val loginViewModel = LoginViewModel(_repository)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val username = binding.emailField.text.toString()
             val password = binding.passwordField.text.toString()
-
 
             if (username.isBlank() || password.isBlank()) {
                 showErrorMsg("É necessário preencher o usuário e a senha.")

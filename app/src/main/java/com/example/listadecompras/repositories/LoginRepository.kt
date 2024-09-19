@@ -22,14 +22,15 @@ class LoginRepository : ILoginRepository {
         }
     }
 
-    override fun register(userName: String, password: String): OnResult<Nothing> {
-        try {
+    override fun register(userName: String, password: String): OnResult<Boolean> {
+        return try {
             listUser.add(User(userName, password))
-            return OnResult.SuccessNoData
+            OnResult.Success(true)
         } catch (e: Exception) {
-            return OnResult.Error(CustomError(e.message ?: "Houve um erro ao registrar"))
+            OnResult.Error(CustomError(e.message ?: "Houve um erro ao registrar"))
         }
     }
+
 
     fun logout() {
         println("Logout")

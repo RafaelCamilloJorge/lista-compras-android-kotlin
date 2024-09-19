@@ -6,8 +6,7 @@ import ShoppingItem
 class ShoppingListOfList(
     var id: Int,
     var name: String,
-    var image: String,
-    var category: Category,
+    var image: Int,
     var shoppingList: MutableList<ShoppingItem> = mutableListOf()
 ) {
     public fun addItem(item: ShoppingItem) {
@@ -26,11 +25,7 @@ class ShoppingListOfList(
         return name;
     }
 
-    public fun getImageList(): String {
+    public fun getImageList(): Int {
         return image;
-    }
-
-    public fun getCategoryList(): Category {
-        return category;
     }
 }

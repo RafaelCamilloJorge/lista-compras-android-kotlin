@@ -1,14 +1,15 @@
 package com.example.listadecompras.feature.shopping_lists
 
+import ShoppingItem
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ListOfItemsBinding
+import com.example.listadecompras.presentation.ShoppingListOfList
 
-data class ShoppingItem(val imageResId: Int, val title: String)
 
-class ShoppingListAdapter(private val items: List<ShoppingItem>) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
+class ShoppingListAdapter(private val items: List<ShoppingListOfList>) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
 
     inner class ShoppingListViewHolder(val binding: ListOfItemsBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -20,8 +21,8 @@ class ShoppingListAdapter(private val items: List<ShoppingItem>) : RecyclerView.
     override fun onBindViewHolder(holder: ShoppingListViewHolder, position: Int) {
         val item = items[position]
         with(holder.binding) {
-            itemImage.setImageResource(item.imageResId)
-            itemTitle.text = item.title
+            itemImage.setImageResource(item.image)
+            itemTitle.text = item.name
         }
     }
 

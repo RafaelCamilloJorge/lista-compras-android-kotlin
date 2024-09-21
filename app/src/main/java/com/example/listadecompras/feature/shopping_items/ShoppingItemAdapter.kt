@@ -1,7 +1,6 @@
 package com.example.listadecompras.feature.shopping_items
 
 import ShoppingItem
-import UnitOfMeasure
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,12 +22,13 @@ class ShoppingItemAdapter(
         val item = items[position]
         with(holder.binding) {
             itemName.text = item.name
-            itemImage.setImageResource(item.image)
             itemQuatity.text = item.quantity.toString()
+            itemImage.setImageResource(item.image)
 
             root.setOnClickListener {
                 onClick(item)
             }
+
         }
     }
 

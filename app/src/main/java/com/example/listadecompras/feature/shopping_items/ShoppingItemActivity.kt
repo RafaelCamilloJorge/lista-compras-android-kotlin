@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityShoppingItemBinding
 
 class ShoppingItemActivity : ComponentActivity() {
@@ -17,16 +16,21 @@ class ShoppingItemActivity : ComponentActivity() {
         setContentView(binding.root)
 
         val list_of_items = mutableListOf(
-            ShoppingItem(1, "Alface", 1, R.drawable.ic_exit, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(2, "Brócolis", 1, R.drawable.ic_exit, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(2, "Abobora", 1, R.drawable.ic_exit, UnitOfMeasure.kilo, Category.vegetables)
+            ShoppingItem(1, "Alface", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(2, "Brócolis", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(3, "Abobora", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(4, "Arroz", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(5, "Feijão", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(6, "Batata", 1, 1, UnitOfMeasure.kilo, Category.vegetables)
         )
 
 
-        binding.recyclerView.adapter = ShoppingItemAdapter(list_of_items) { item ->
-            onListItemClicked(item)
+        val adapter = ShoppingItemAdapter(list_of_items) { item ->
+            Toast.makeText(this, "Clicou no item ${item.name}", Toast.LENGTH_SHORT).show()
         }
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
     }
 
     private fun onListItemClicked(item: ShoppingItem) {

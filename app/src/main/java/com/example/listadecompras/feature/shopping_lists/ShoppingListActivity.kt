@@ -3,11 +3,8 @@ package com.example.listadecompras.feature.shopping_lists
 import ShoppingItem
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.core.graphics.Insets
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityShoppingListBinding
 import com.example.listadecompras.feature.shopping_items.ShoppingItemActivity
@@ -29,7 +26,8 @@ class ShoppingListActivity : ComponentActivity() {
 
         val list_of_list = mutableListOf(
             ShoppingListOfList(1, "Saudavel", R.drawable.ic_exit, list_of_items ),
-            ShoppingListOfList(2, "Fim de Semana", R.drawable.ic_exit, list_of_items )
+            ShoppingListOfList(2, "Fim de Semana", R.drawable.ic_exit, list_of_items ),
+            ShoppingListOfList(3, "Feira", R.drawable.ic_exit, list_of_items )
         )
 
         val adapter = ShoppingListAdapter(list_of_list, ::onListItemClicked)

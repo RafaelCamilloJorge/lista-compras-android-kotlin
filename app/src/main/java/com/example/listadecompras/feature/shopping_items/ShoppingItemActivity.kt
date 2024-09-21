@@ -1,5 +1,6 @@
 package com.example.listadecompras.feature.shopping_items
 
+import Category
 import ShoppingItem
 import android.os.Bundle
 import android.widget.Toast
@@ -19,12 +20,11 @@ class ShoppingItemActivity : ComponentActivity() {
         binding.textView.text = title
 
         val list_of_items = mutableListOf(
-            ShoppingItem(1, "Alface", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(2, "Brócolis", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(3, "Abobora", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(4, "Arroz", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(5, "Feijão", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(6, "Batata", 1, 1, UnitOfMeasure.kilo, Category.vegetables)
+            ShoppingItem(1, "Cenoura", Category.vegetables.getIcon(), 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(2, "Carne", Category.meat.getIcon(), 2, UnitOfMeasure.kilo, Category.meat),
+            ShoppingItem(3, "Arroz", Category.seeds.getIcon(), 10, UnitOfMeasure.gram, Category.seeds),
+            ShoppingItem(4, "Leite", Category.dairy.getIcon(), 5, UnitOfMeasure.liter, Category.dairy),
+            ShoppingItem(5, "Peixe", Category.fish.getIcon(), 3, UnitOfMeasure.kilo, Category.fish),
         )
 
 

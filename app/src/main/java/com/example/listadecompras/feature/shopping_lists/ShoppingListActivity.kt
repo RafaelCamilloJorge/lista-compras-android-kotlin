@@ -45,6 +45,7 @@ class ShoppingListActivity : ComponentActivity() {
 
     private fun onListItemClicked(list_of_list: ShoppingListOfList) {
         val intent = Intent(this, ShoppingItemActivity::class.java)
+        intent.putExtra("title", list_of_list.getNameList())
         startActivity(intent)
     }
 }

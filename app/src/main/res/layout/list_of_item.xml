@@ -22,7 +22,6 @@
         android:text="{Nome Item}"
         app:layout_constraintLeft_toRightOf="@+id/item_image"
         app:layout_constraintTop_toTopOf="@id/item_image"
-        app:layout_constraintBottom_toBottomOf="@+id/item_image"
         android:layout_marginLeft="10dp"
         android:textStyle="bold"
         ></TextView>
@@ -34,6 +33,7 @@
         app:layout_constraintLeft_toRightOf="@+id/item_image"
         app:layout_constraintTop_toBottomOf="@id/item_name"
         android:text="{Quantidade Item}"
+        android:layout_marginTop="2dp"
         app:layout_constraintLeft_toLeftOf="@id/item_name"
         android:textSize="10sp"
         android:textColor="@color/gray_600"></TextView>

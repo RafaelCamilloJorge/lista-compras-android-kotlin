@@ -22,7 +22,7 @@ class ShoppingItemAdapter(
         val item = items[position]
         with(holder.binding) {
             itemName.text = item.name
-            itemQuatity.text = item.quantity.toString()
+            itemQuatity.text = item.quantity.toString() + " " + item.unity.getName()
             itemImage.setImageResource(item.image)
 
             root.setOnClickListener {

@@ -15,6 +15,9 @@ class ShoppingItemActivity : ComponentActivity() {
         binding = ActivityShoppingItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var title = intent.getStringExtra("title")
+        binding.textView.text = title
+
         val list_of_items = mutableListOf(
             ShoppingItem(1, "Alface", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
             ShoppingItem(2, "Brócolis", 1, 1, UnitOfMeasure.kilo, Category.vegetables),

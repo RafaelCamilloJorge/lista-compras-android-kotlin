@@ -1,13 +1,16 @@
 package com.example.listadecompras.feature.shopping_lists
 
 import ShoppingItem
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.core.graphics.Insets
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityShoppingListBinding
+import com.example.listadecompras.feature.shopping_items.ShoppingItemActivity
 import com.example.listadecompras.presentation.ShoppingListOfList
 
 class ShoppingListActivity : ComponentActivity() {
@@ -19,8 +22,8 @@ class ShoppingListActivity : ComponentActivity() {
         setContentView(binding.root)
 
         val list_of_items = mutableListOf(
-            ShoppingItem(1, "Alface", 1, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(2, "Brócolis", 1, UnitOfMeasure.kilo, Category.vegetables)
+            ShoppingItem(1, "Alface", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(2, "Brócolis", 1, 1, UnitOfMeasure.kilo, Category.vegetables)
         )
 
 
@@ -35,9 +38,15 @@ class ShoppingListActivity : ComponentActivity() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
 
+        binding.fab.setOnClickListener{
+            val intent = Intent(this, ShoppingItemActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
-    private fun onListItemClicked(list_of_list : ShoppingListOfList) {
-        Toast.makeText(this, "Clicou no " + list_of_list.name, Toast.LENGTH_LONG).show()
+    private fun onListItemClicked(list_of_list: ShoppingListOfList) {
+        val intent = Intent(this, ShoppingItemActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityShoppingListBinding
+import com.example.listadecompras.feature.manage_list.ManegeListActivity
 import com.example.listadecompras.feature.shopping_items.ShoppingItemActivity
 import com.example.listadecompras.presentation.ShoppingListOfList
 
@@ -37,7 +38,7 @@ class ShoppingListActivity : ComponentActivity() {
         binding.recyclerView.layoutManager = layoutManager
 
         binding.fab.setOnClickListener{
-            val intent = Intent(this, ShoppingItemActivity::class.java)
+            val intent = Intent(this, ManegeListActivity::class.java)
             startActivity(intent)
         }
 

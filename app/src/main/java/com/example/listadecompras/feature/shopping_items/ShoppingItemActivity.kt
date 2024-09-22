@@ -25,7 +25,9 @@ class ShoppingItemActivity : ComponentActivity() {
             ShoppingItem(3, "Arroz", Category.seeds.getIcon(), 10, UnitOfMeasure.gram, Category.seeds),
             ShoppingItem(4, "Leite", Category.dairy.getIcon(), 5, UnitOfMeasure.liter, Category.dairy),
             ShoppingItem(5, "Peixe", Category.fish.getIcon(), 3, UnitOfMeasure.kilo, Category.fish),
+            ShoppingItem(1, "Brocolis", Category.vegetables.getIcon(), 1, UnitOfMeasure.kilo, Category.vegetables),
         )
+
 
 
         val adapter = ShoppingItemAdapter(list_of_items) { item ->

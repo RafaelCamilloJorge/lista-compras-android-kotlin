@@ -26,6 +26,12 @@
             android:name=".feature.register.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".feature.manage_list.ManageListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.manage_item.ManageItemActivity"
+            android:exported="false" />
+        <activity
             android:name=".feature.login.MainActivity"
             android:exported="true" >
             <intent-filter>

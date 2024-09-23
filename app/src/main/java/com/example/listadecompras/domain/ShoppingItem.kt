@@ -1,3 +1,5 @@
+import java.io.Serializable
+
 class ShoppingItem(
     var id: Int,
     var name: String,
@@ -5,4 +7,4 @@ class ShoppingItem(
     var quantity: Int = 0,
     var unity: UnitOfMeasure,
     var category: Category
-)
+) : Serializable

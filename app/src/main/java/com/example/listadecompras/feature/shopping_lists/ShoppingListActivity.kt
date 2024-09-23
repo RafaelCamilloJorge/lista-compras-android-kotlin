@@ -1,5 +1,6 @@
 package com.example.listadecompras.feature.shopping_lists
 
+import Category
 import ShoppingItem
 import android.content.Intent
 import android.os.Bundle
@@ -19,16 +20,26 @@ class ShoppingListActivity : ComponentActivity() {
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val list_of_items = mutableListOf(
-            ShoppingItem(1, "Alface", 1, 1, UnitOfMeasure.kilo, Category.vegetables),
-            ShoppingItem(2, "Brócolis", 1, 1, UnitOfMeasure.kilo, Category.vegetables)
+        val list_of_itemsSaudavel = mutableListOf(
+            ShoppingItem(1, "Alface", Category.vegetables.getIcon(), 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(2, "Brócolis", Category.vegetables.getIcon(), 1, UnitOfMeasure.kilo, Category.vegetables)
+        )
+
+        val list_of_itemsFimDeSemana = mutableListOf(
+            ShoppingItem(1, "Chocolate", Category.vegetables.getIcon(), 1, UnitOfMeasure.kilo, Category.vegetables),
+            ShoppingItem(2, "Pipoca", Category.vegetables.getIcon(), 1, UnitOfMeasure.kilo, Category.vegetables)
+        )
+
+        val list_of_itemsFeira = mutableListOf(
+            ShoppingItem(1, "Pastel", Category.vegetables.getIcon(), 1, UnitOfMeasure.kilo, Category.fish),
+            ShoppingItem(2, "Caldo de Cana", Category.vegetables.getIcon(), 1, UnitOfMeasure.liter, Category.dairy)
         )
 
 
         val list_of_list = mutableListOf(
-            ShoppingListOfList(1, "Saudavel", R.drawable.ic_exit, list_of_items ),
-            ShoppingListOfList(2, "Fim de Semana", R.drawable.ic_exit, list_of_items ),
-            ShoppingListOfList(3, "Feira", R.drawable.ic_exit, list_of_items )
+            ShoppingListOfList(1, "Saudavel", R.drawable.ic_exit, list_of_itemsSaudavel ),
+            ShoppingListOfList(2, "Fim de Semana", R.drawable.ic_exit, list_of_itemsFimDeSemana ),
+            ShoppingListOfList(3, "Feira", R.drawable.ic_exit, list_of_itemsFeira )
         )
 
         val adapter = ShoppingListAdapter(list_of_list, ::onListItemClicked)
@@ -47,6 +58,7 @@ class ShoppingListActivity : ComponentActivity() {
     private fun onListItemClicked(list_of_list: ShoppingListOfList) {
         val intent = Intent(this, ShoppingItemActivity::class.java)
         intent.putExtra("title", list_of_list.getNameList())
+        intent.putExtra("items", ArrayList(list_of_list.shoppingList))
         startActivity(intent)
     }
 }

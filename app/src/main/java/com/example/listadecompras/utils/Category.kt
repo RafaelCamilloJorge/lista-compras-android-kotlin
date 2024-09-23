@@ -1,6 +1,7 @@
 import com.example.listadecompras.R
+import java.io.Serializable
 
-enum class Category {
+enum class Category : Serializable {
     vegetables,
     meat,
     dairy,

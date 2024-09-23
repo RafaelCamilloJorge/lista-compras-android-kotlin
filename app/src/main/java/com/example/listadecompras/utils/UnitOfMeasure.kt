@@ -1,4 +1,6 @@
-enum class UnitOfMeasure {
+import java.io.Serializable
+
+enum class UnitOfMeasure : Serializable {
     kilo,
     gram,
     liter,

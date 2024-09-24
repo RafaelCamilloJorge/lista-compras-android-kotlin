@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.shopping_lists.ShoppingListActivity">
+    tools:context=".feature.shopping_items.ShoppingItemActivity">
 
     <EditText
         android:id="@+id/search_field"
@@ -20,10 +19,10 @@
         />
 
     <ImageView
-        android:id="@+id/exit_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_exit"
+        android:id="@+id/edit_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@android:drawable/ic_menu_edit"
         app:layout_constraintStart_toEndOf="@+id/search_field"
         app:layout_constraintTop_toTopOf="@id/search_field"
         app:layout_constraintBottom_toBottomOf="@id/search_field"
@@ -34,7 +33,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SUAS LISTAS"
+        android:text="{Nome da Lista}"
         android:textStyle="bold"
         android:textSize="30sp"
         app:layout_constraintTop_toBottomOf="@+id/search_field"

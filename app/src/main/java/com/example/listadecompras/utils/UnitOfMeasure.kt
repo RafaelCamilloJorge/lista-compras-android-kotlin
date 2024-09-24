@@ -1,4 +1,6 @@
-enum class UnitOfMeasure {
+import java.io.Serializable
+
+enum class UnitOfMeasure : Serializable {
     kilo,
     gram,
     liter,
@@ -6,10 +8,10 @@ enum class UnitOfMeasure {
 
     fun getName(): String {
         return when (this) {
-            kilo -> "Quilo"
-            gram -> "Grama"
-            liter -> "Litro"
-            unit -> "Unidade"
+            kilo -> "Kg"
+            gram -> "g"
+            liter -> "L"
+            unit -> "un"
         }
     }
 

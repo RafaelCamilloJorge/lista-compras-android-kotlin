@@ -1,17 +1,20 @@
-enum class Category {
+import com.example.listadecompras.R
+import java.io.Serializable
+
+enum class Category : Serializable {
     vegetables,
     meat,
     dairy,
     fish,
     seeds;
 
-    fun getIcon(): String {
+    fun getIcon(): Int {
         return when (this) {
-            vegetables -> ""
-            meat -> ""
-            dairy -> ""
-            fish -> ""
-            seeds -> ""
+            vegetables -> R.drawable.ic_vegetables
+            meat -> R.drawable.ic_meat
+            dairy -> R.drawable.ic_dairy
+            fish -> R.drawable.ic_fish
+            seeds -> R.drawable.ic_seeds
         }
     }
 

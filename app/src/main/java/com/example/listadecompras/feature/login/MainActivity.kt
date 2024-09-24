@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityMainBinding
 import com.example.listadecompras.feature.register.RegisterActivity
+import com.example.listadecompras.feature.shopping_items.ShoppingItemActivity
 import com.example.listadecompras.feature.shopping_lists.ShoppingListActivity
 import com.example.listadecompras.repositories.LoginRepository
 import com.example.listadecompras.repositories.interfaces.ILoginRepository

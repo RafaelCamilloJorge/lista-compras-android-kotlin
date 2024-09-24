@@ -10,11 +10,12 @@
         android:id="@+id/item_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/ic_exit"
+        android:src="@android:drawable/ic_menu_report_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/item_title" />
+        app:layout_constraintBottom_toTopOf="@+id/item_title"
+        android:background="@color/gray_400"/>
 
     <TextView
         android:id="@+id/item_title"

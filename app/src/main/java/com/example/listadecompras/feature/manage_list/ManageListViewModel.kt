@@ -1,21 +1,21 @@
 package com.example.listadecompras.feature.manage_list
 
+import androidx.lifecycle.ViewModel
 import com.example.listadecompras.presentation.ShoppingListOfList
 import com.example.listadecompras.repositories.ListRepository
 
-class ManageListViewModel(private val listRepository: ListRepository) {
-
+class ManageListViewModel(
+    private val listRepository: ListRepository
+) : ViewModel() {
     fun create(newList: ShoppingListOfList) {
         val response = listRepository.createShoppingListOfList(newList)
         response.fold(onSuccess = {}, onError = { data -> println(data.messageError()) })
     }
 
-    fun get(id: Int) {
-        val response = listRepository.getListsOfList(id)
+    fun getById(id: Int) {
+        val response = listRepository.getListsOfListById(id)
         response.fold(
-            onSuccess = { data ->
-                println(data[0].id)
-            },
+            onSuccess = { data -> println(data.id) },
             onError = { error -> println(error) },
         )
     }
@@ -28,7 +28,7 @@ class ManageListViewModel(private val listRepository: ListRepository) {
     }
 
     fun delete(id: Int) {
-        val result = listRepository.removeShoppingListById(id)
+        val result = listRepository.removeListOfListById(id)
         result.fold(
             onSuccess = { println("Removeu") },
             onError = { data -> println(data.messageError()) })

@@ -3,26 +3,29 @@ package com.example.listadecompras.feature.login
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityMainBinding
 import com.example.listadecompras.feature.register.RegisterActivity
-import com.example.listadecompras.feature.shopping_items.ShoppingItemActivity
 import com.example.listadecompras.feature.shopping_lists.ShoppingListActivity
-import com.example.listadecompras.repositories.LoginRepository
-import com.example.listadecompras.repositories.interfaces.ILoginRepository
-
+import com.example.listadecompras.injection_dependencie.DependencyInitializer
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val _repository = LoginRepository()
-    private val loginViewModel = LoginViewModel(_repository)
+    private val loginViewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startKoin {
+            androidContext(this@MainActivity)
+            modules(DependencyInitializer().appModule)
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -50,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                         showErrorMsg("Credenciais inválidas.")
                     }
                     else -> {
-                        showErrorMsg("Erro ao tentar logar.")
+                        showErrorMsg("Erro ao tentar entrar.")
                     }
                 }
             }

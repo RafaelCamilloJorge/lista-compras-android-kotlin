@@ -3,13 +3,14 @@ package com.example.listadecompras.repositories
 import CustomError
 import OnResult
 import ShoppingItem
-import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.listadecompras.presentation.ShoppingListOfList
+import com.example.listadecompras.repositories.interfaces.IListRepository
 
-class ListRepository {
+class ListRepository : IListRepository {
     private var shoppingListOfLists = mutableListOf<ShoppingListOfList>()
 
-    fun createShoppingListOfList(shoppingListOfList: ShoppingListOfList): OnResult<Nothing> {
+    //////////////////lista de listas//////////////////
+    override fun createShoppingListOfList(shoppingListOfList: ShoppingListOfList): OnResult<Nothing> {
         try {
             shoppingListOfLists.add(shoppingListOfList)
             return OnResult.Success(null) as Nothing
@@ -18,16 +19,42 @@ class ListRepository {
         }
     }
 
-    fun getShoppingListById(id: Int): ShoppingListOfList? {
-        shoppingListOfLists.forEach {
-            if (it.id == id) {
-                return it
-            }
+    override fun getAllListOfLists(): OnResult<List<ShoppingListOfList>> {
+        try {
+            return OnResult.Success(shoppingListOfLists)
+        } catch (e: Exception) {
+            return OnResult.Error(CustomError("Erro ao pegar suas listas"))
         }
-        return null
     }
 
-    fun removeShoppingListById(id: Int): OnResult<Nothing> {
+    override fun getListsOfListByName(name: String): OnResult<List<ShoppingListOfList>> {
+        var list = mutableListOf<ShoppingListOfList>()
+        try {
+            shoppingListOfLists.forEach {
+                if (it.name.contains(name)) {
+                    list.add(it)
+                }
+            }
+        } catch (e: Exception) {
+            return OnResult.Error(CustomError("Erro ao realizar a busca"))
+        }
+        return OnResult.Success(list)
+    }
+
+    override fun getListsOfListById(id: Int): OnResult<ShoppingListOfList> {
+        try {
+            shoppingListOfLists.forEach {
+                if (it.id == id) {
+                    return OnResult.Success(it)
+                }
+            }
+        } catch (e: Exception) {
+            return OnResult.Error(CustomError("Erro ao realizar a busca"))
+        }
+        return OnResult.Error(CustomError("Lista não encontrada"))
+    }
+
+    override fun removeListOfListById(id: Int): OnResult<Nothing> {
         try {
             shoppingListOfLists.forEach {
                 if (it.id == id) {
@@ -41,7 +68,7 @@ class ListRepository {
         return OnResult.Error(CustomError("Lista não encontrada"))
     }
 
-    fun updateShoppingList(id: Int, newList: ShoppingListOfList): OnResult<Nothing> {
+    override fun updateShoppingList(id: Int, newList: ShoppingListOfList): OnResult<Nothing> {
         try {
             shoppingListOfLists.forEach {
                 if (it.id == id) {
@@ -55,26 +82,12 @@ class ListRepository {
         }
     }
 
-    fun getListsOfList(id: Int): OnResult<List<ShoppingListOfList>> {
-        val list: MutableList<ShoppingListOfList> = mutableListOf()
-        try {
-            shoppingListOfLists.forEach {
-                if (it.id == id) {
-                    list.add(it)
-                }
-            }
-            return OnResult.Success(list)
-        } catch (e: Exception) {
-            return OnResult.Error(CustomError("Erro ao buscar a lista"))
-        }
-
-    }
-
-    fun addItemInList(id: Int, item: ShoppingItem) {
+    //////////////////somente itens//////////////////
+    override fun addItemInList(id: Int, item: ShoppingItem) {
 //        itemList.add(item)
     }
 
-    fun removeItemById(idShoppingItem: Int, idItem: Int) {
+    override fun removeItemById(idShoppingItem: Int, idItem: Int) {
 //        itemList.forEach {
 //            if (it.id == id) {
 //                itemList.remove(it)
@@ -83,7 +96,7 @@ class ListRepository {
 //        }
     }
 
-    fun updateItem(id: Int, newItem: ShoppingItem) {
+    override fun updateItem(id: Int, newItem: ShoppingItem) {
 //        itemList.forEach {
 //            if (it.id == id) {
 //                val index: Int = itemList.indexOf(it)

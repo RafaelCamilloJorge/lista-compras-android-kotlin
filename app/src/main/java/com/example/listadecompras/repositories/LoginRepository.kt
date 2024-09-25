@@ -15,14 +15,14 @@ class LoginRepository : ILoginRepository {
             }
         }
 
-        if(userName == "admin" && password == "admin"){
+        if (userName == "admin" && password == "admin") {
             return OnResult.Success(true)
         }
 
         if (user != null) {
             return OnResult.Success(true)
         } else {
-            return OnResult.Error(CustomError("Preencha todos os campos"))
+            return OnResult.Error(CustomError("Usuário não encontrado"))
         }
     }
 

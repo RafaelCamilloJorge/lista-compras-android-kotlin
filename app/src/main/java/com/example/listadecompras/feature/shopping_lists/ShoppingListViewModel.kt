@@ -1,21 +1,23 @@
 package com.example.listadecompras.feature.shopping_lists
 
+import OnResult
+import androidx.lifecycle.ViewModel
 import com.example.listadecompras.presentation.ShoppingListOfList
+import com.example.listadecompras.repositories.ListRepository
 
-class ShoppingListViewModel {
+class ShoppingListViewModel(private val listRepository: ListRepository) : ViewModel() {
 
-    private var shoppingListOfLists = mutableListOf<ShoppingListOfList>()
-
-    val getShoppingListOfLists: List<ShoppingListOfList> = shoppingListOfLists
-
-    fun getAllLists(): MutableList<ShoppingListOfList> {
-        return shoppingListOfLists
+    fun getAllLists(): OnResult<List<ShoppingListOfList>> {
+        return listRepository.getAllListOfLists();
     }
 
-    fun searchList(name: String): List<ShoppingListOfList?> {
-        val resultSearch: List<ShoppingListOfList?> =
-            shoppingListOfLists.sortedBy { it.name.contains(name) }
-        return resultSearch
+    fun searchList(name: String): OnResult<List<ShoppingListOfList>> {
+        return listRepository.getListsOfListByName(name)
+    }
+
+    //temporário essa fun
+    fun add(item: ShoppingListOfList) {
+        listRepository.createShoppingListOfList(item);
     }
 
     fun openList(id: Int) {

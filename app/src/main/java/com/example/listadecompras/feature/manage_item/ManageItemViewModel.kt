@@ -1,9 +1,9 @@
 package com.example.listadecompras.feature.manage_item
 
-import ShoppingItem
-import com.example.listadecompras.repositories.ListRepository
+import androidx.lifecycle.ViewModel
 
-class ManageItemViewModel(private val listRepository: ListRepository) {
+class ManageItemViewModel : ViewModel() {
+//    private val listRepository: ListRepository
     //TODO falta esse cara aqui agora kkkk
 //    private var itemList = mutableListOf<ShoppingItem>()
 //

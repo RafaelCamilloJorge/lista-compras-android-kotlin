@@ -1,32 +1,32 @@
 package com.example.listadecompras.presentation
 
-import Category
 import ShoppingItem
+import android.net.Uri
 import java.io.Serializable
 
 class ShoppingListOfList(
     var id: Int,
     var name: String,
-    var image: Int,
+    var image: String?,
     var shoppingList: MutableList<ShoppingItem>
 ) : Serializable {
     public fun addItem(item: ShoppingItem) {
-        shoppingList.add(item);
+        shoppingList.add(item)
     }
 
     public fun removeItem(item: ShoppingItem) {
-        shoppingList.remove(item);
+        shoppingList.remove(item)
     }
 
     public fun getItems(): MutableList<ShoppingItem> {
-        return shoppingList;
+        return shoppingList
     }
 
     public fun getNameList(): String {
-        return name;
+        return name
     }
 
-    public fun getImageList(): Int {
-        return image;
+    fun getImageList(): Uri? {
+        return image?.let{ Uri.parse(it) }
     }
 }

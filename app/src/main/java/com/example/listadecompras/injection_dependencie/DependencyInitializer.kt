@@ -7,6 +7,7 @@ import com.example.listadecompras.feature.login.LoginViewModel
 import com.example.listadecompras.feature.manage_item.ManageItemViewModel
 import com.example.listadecompras.feature.manage_list.ManageListViewModel
 import com.example.listadecompras.feature.register.RegisterViewModel
+import com.example.listadecompras.feature.shopping_items.ShoppingItemViewModel
 import com.example.listadecompras.feature.shopping_lists.ShoppingListViewModel
 import com.example.listadecompras.repositories.ListRepository
 import com.example.listadecompras.repositories.LoginRepository
@@ -19,8 +20,9 @@ class DependencyInitializer {
         //ViewModels
         viewModel { LoginViewModel(get()) }
         viewModel { ManageListViewModel(get()) }
-        viewModel { ManageItemViewModel() }
+        viewModel { ManageItemViewModel(get()) }
         viewModel { RegisterViewModel(get()) }
         viewModel { ShoppingListViewModel(get()) }
+        viewModel { ShoppingItemViewModel(get()) }
     }
 }

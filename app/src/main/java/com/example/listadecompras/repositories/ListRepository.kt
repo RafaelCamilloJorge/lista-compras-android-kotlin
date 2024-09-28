@@ -83,26 +83,29 @@ class ListRepository : IListRepository {
     }
 
     //////////////////somente itens//////////////////
-    override fun addItemInList(id: Int, item: ShoppingItem) {
-//        itemList.add(item)
+    override fun addItemInList(item: ShoppingItem, idList: Int) {
+        shoppingListOfLists.forEach {
+            if (it.id == idList) {
+                it.shoppingList.add(item)
+                return
+            }
+        }
+    }
+
+    override fun getAllItemsOfList(idList: Int): List<ShoppingItem> {
+        shoppingListOfLists.forEach {
+            if (it.id == idList) {
+                return it.shoppingList
+            }
+        }
+        return emptyList()
     }
 
     override fun removeItemById(idShoppingItem: Int, idItem: Int) {
-//        itemList.forEach {
-//            if (it.id == id) {
-//                itemList.remove(it)
-//                return
-//            }
-//        }
+        TODO("Not yet implemented")
     }
 
     override fun updateItem(id: Int, newItem: ShoppingItem) {
-//        itemList.forEach {
-//            if (it.id == id) {
-//                val index: Int = itemList.indexOf(it)
-//                itemList[index] = newItem
-//                return
-//            }
-//        }
+        TODO("Not yet implemented")
     }
 }

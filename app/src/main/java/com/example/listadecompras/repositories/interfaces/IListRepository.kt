@@ -17,7 +17,9 @@ interface IListRepository {
 
     fun getListsOfListById(id: Int): OnResult<ShoppingListOfList>
 
-    fun addItemInList(id: Int, item: ShoppingItem)
+    fun addItemInList(item: ShoppingItem, idList: Int)
+
+    fun getAllItemsOfList(idList: Int): List<ShoppingItem>
 
     fun removeItemById(idShoppingItem: Int, idItem: Int)
 

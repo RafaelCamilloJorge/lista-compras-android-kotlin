@@ -11,12 +11,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityManageListBinding
+import com.example.listadecompras.feature.shopping_lists.ShoppingListViewModel
 import com.example.listadecompras.presentation.ShoppingListOfList
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ManageListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityManageListBinding
     private var selectedImage: Uri? = null
+    private val manageListViewModel: ManageListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,15 +41,15 @@ class ManageListActivity : AppCompatActivity() {
             val listName = binding.nameField.text.toString()
 
             if (listName.isNotEmpty()) {
-                val novaListaDeCompras = ShoppingListOfList(
-                    id = 1,
-                    name = listName,
+                val newList = ShoppingListOfList(
+                    id = manageListViewModel.getNextId(),
+                    name = listName.first().uppercase() + listName.substring(1),
                     image = selectedImage.toString(),
                     shoppingList = mutableListOf()
                 )
 
                 val resultIntent = Intent()
-                resultIntent.putExtra("newList", novaListaDeCompras)
+                manageListViewModel.add(newList)
                 setResult(RESULT_OK, resultIntent)
                 finish()
             } else {

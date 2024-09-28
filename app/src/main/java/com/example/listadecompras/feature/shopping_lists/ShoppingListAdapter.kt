@@ -51,7 +51,7 @@ class ShoppingListAdapter(
 
     fun updateList(newList: List<ShoppingListOfList>) {
         shoppingListOfList.clear()
-        shoppingListOfList.addAll(newList.sortedBy { it.name })
+        shoppingListOfList.addAll(newList.sortedBy { it.name.lowercase() })
         notifyDataSetChanged()
     }
 

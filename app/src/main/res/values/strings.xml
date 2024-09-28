@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Lista de Compras</string>
+    
+    <string-array name="spinner_Category">
+        <item>vegetables</item>
+        <item>meat</item>
+        <item>dairy</item>
+        <item>fish</item>
+        <item>seeds</item>
+    </string-array>
+
+    <string-array name="spinner_Unit">
+        <item>kilo</item>
+        <item>gram</item>
+        <item>liter</item>
+        <item>fish</item>
+        <item>unit</item>
+    </string-array>
 </resources>

@@ -43,7 +43,7 @@ class ManageListActivity : AppCompatActivity() {
             if (listName.isNotEmpty()) {
                 val newList = ShoppingListOfList(
                     id = manageListViewModel.getNextId(),
-                    name = listName,
+                    name = listName.first().uppercase() + listName.substring(1),
                     image = selectedImage.toString(),
                     shoppingList = mutableListOf()
                 )

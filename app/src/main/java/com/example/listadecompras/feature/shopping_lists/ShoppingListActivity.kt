@@ -1,5 +1,7 @@
 package com.example.listadecompras.feature.shopping_lists
 
+import Category
+import ShoppingItem
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -25,6 +27,8 @@ class ShoppingListActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        mock()
 
         getData()
 
@@ -56,15 +60,14 @@ class ShoppingListActivity : ComponentActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK) {
                 getData()
-                adapter.updateList(shoppingListOfList) //perguntar para o bruno o porque o notifyDataSetChanged não está funcionando
-
+                adapter.updateList(shoppingListOfList)
         }
     }
 
     private fun onListItemClicked(list_of_list: ShoppingListOfList) {
         val intent = Intent(this, ShoppingItemActivity::class.java)
         intent.putExtra("title", list_of_list.getNameList())
-        intent.putExtra("items", ArrayList(list_of_list.shoppingList))
+        intent.putExtra("idList", list_of_list.getIdList())
         startActivity(intent)
     }
 
@@ -73,6 +76,25 @@ class ShoppingListActivity : ComponentActivity() {
         result.fold(
             onSuccess = { data -> shoppingListOfList = data.toMutableList()},
             onError = { error -> println(error.messageError()) })
+    }
+
+    private fun mock(){
+        val ShoppingListOfList = ShoppingListOfList(
+            id = 1,
+            name = "Lista de Compras",
+            image = "",
+            shoppingList = mutableListOf(
+                ShoppingItem(
+                    id = 1,
+                    name = "Arroz",
+                    quantity = 1,
+                    unity = UnitOfMeasure.kilo,
+                    image = Category.fish.getIcon(),
+                    category = Category.fish
+                ),
+                )
+            )
+        shoppingListViewModel.add(ShoppingListOfList)
     }
 
 

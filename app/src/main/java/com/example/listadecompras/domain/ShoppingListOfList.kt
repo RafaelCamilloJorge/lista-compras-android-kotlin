@@ -26,6 +26,10 @@ class ShoppingListOfList(
         return name
     }
 
+    public fun getIdList(): Int {
+        return id
+    }
+
     fun getImageList(): Uri? {
         return image?.let{ Uri.parse(it) }
     }

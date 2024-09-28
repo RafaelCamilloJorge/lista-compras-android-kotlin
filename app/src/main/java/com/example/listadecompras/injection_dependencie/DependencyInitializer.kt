@@ -10,8 +10,6 @@ import com.example.listadecompras.feature.register.RegisterViewModel
 import com.example.listadecompras.feature.shopping_lists.ShoppingListViewModel
 import com.example.listadecompras.repositories.ListRepository
 import com.example.listadecompras.repositories.LoginRepository
-import com.example.listadecompras.repositories.interfaces.IListRepository
-import com.example.listadecompras.repositories.interfaces.ILoginRepository
 
 class DependencyInitializer {
     val appModule = module {

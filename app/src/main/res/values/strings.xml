@@ -2,18 +2,17 @@
     <string name="app_name">Lista de Compras</string>
     
     <string-array name="spinner_Category">
-        <item>vegetables</item>
-        <item>meat</item>
-        <item>dairy</item>
-        <item>fish</item>
-        <item>seeds</item>
+        <item>Vegetais</item>
+        <item>Peixes</item>
+        <item>Carnes</item>
+        <item>Laticínio</item>
+        <item>Grãos</item>
     </string-array>
 
     <string-array name="spinner_Unit">
-        <item>kilo</item>
-        <item>gram</item>
-        <item>liter</item>
-        <item>fish</item>
-        <item>unit</item>
+        <item>Kg</item>
+        <item>g</item>
+        <item>L</item>
+        <item>un</item>
     </string-array>
 </resources>

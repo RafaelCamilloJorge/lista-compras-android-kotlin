@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listadecompras.databinding.ListOfItemBinding
-import com.example.listadecompras.presentation.ShoppingListOfList
 
 class ShoppingItemAdapter(
     private val items: List<ShoppingItem>,
@@ -40,6 +39,12 @@ class ShoppingItemAdapter(
     fun updateList(newList: List<ShoppingItem>) {
         shoppingListOfItem.clear()
         shoppingListOfItem.addAll(newList.sortedBy { it.name.lowercase() })
+        notifyDataSetChanged()
+    }
+
+    fun search(query: String) {
+        shoppingListOfItem.clear()
+        shoppingListOfItem.addAll(items.filter { it.name.startsWith(query, true) }.sortedBy { it.name })
         notifyDataSetChanged()
     }
 }

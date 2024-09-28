@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.listadecompras.databinding.ActivityShoppingItemBinding
 import com.example.listadecompras.feature.manage_item.ManageItemActivity
@@ -42,6 +43,10 @@ class ShoppingItemActivity : ComponentActivity() {
             startActivityForResult(intent, 1)
         }
 
+        binding.searchField.addTextChangedListener { text ->
+            val searchText = text.toString()
+            adapter.search(searchText)
+        }
 
     }
 

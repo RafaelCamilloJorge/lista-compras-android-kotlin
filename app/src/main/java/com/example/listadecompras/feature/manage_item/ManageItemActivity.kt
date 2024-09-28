@@ -42,17 +42,19 @@ class ManageItemActivity : AppCompatActivity() {
             }
         }
 
+
     }
 
     fun saveItem(idList: Int): Boolean {
+        if (!validateFields()) {
+            return false
+        }
+
         val itemName = binding.nameField.text.toString()
         val itemQuantity = binding.quantityField.text.toString().toInt()
         val itemCategory = binding.categorySpinner.selectedItem.toString()
         val itemUnit = binding.unitSpinner.selectedItem.toString()
 
-        if (!validateFields()) {
-            return false
-        }
         val categoryEnum = Category.values().firstOrNull { it.getName() == itemCategory }
         val unitEnum = UnitOfMeasure.values().firstOrNull { it.getName() == itemUnit }
 

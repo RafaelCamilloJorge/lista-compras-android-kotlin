@@ -7,7 +7,7 @@ import com.example.listadecompras.repositories.ListRepository
 class ManageListViewModel(
     private val listRepository: ListRepository
 ) : ViewModel() {
-    fun create(newList: ShoppingListOfList) {
+    fun add(newList: ShoppingListOfList) {
         val response = listRepository.createShoppingListOfList(newList)
         response.fold(onSuccess = {}, onError = { data -> println(data.messageError()) })
     }
@@ -32,6 +32,14 @@ class ManageListViewModel(
         result.fold(
             onSuccess = { println("Removeu") },
             onError = { data -> println(data.messageError()) })
+    }
+
+    fun getNextId(): Int {
+        val response = listRepository.getAllListOfLists()
+        return response.fold(
+            onSuccess = { data -> data.size },
+            onError = { data -> 0 }
+        )
     }
 
 }

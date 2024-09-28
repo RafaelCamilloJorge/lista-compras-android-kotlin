@@ -37,7 +37,6 @@ class ShoppingListActivity : ComponentActivity() {
         binding.fab.setOnClickListener {
             val intent = Intent(this, ManageListActivity::class.java)
             startActivityForResult(intent, 1)
-            adapter.notifyDataSetChanged()
         }
 
         binding.searchField.addTextChangedListener{ text ->
@@ -56,12 +55,9 @@ class ShoppingListActivity : ComponentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            val newList = data?.getSerializableExtra("newList") as ShoppingListOfList
-            if(newList != null) {
-                shoppingListViewModel.add(newList)
-                shoppingListOfList.add(newList)
+                getData()
                 adapter.updateList(shoppingListOfList) //perguntar para o bruno o porque o notifyDataSetChanged não está funcionando
-            }
+
         }
     }
 

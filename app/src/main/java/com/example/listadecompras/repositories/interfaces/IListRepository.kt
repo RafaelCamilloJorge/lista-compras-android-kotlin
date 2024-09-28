@@ -23,5 +23,5 @@ interface IListRepository {
 
     fun removeItemById(idShoppingItem: Int, idItem: Int)
 
-    fun updateItem(id: Int, newItem: ShoppingItem)
+    fun updateItem(idList: Int, idItem: Int, newItem: ShoppingItem)
 }

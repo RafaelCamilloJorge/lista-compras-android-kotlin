@@ -101,11 +101,27 @@ class ListRepository : IListRepository {
         return emptyList()
     }
 
-    override fun removeItemById(idShoppingItem: Int, idItem: Int) {
-        TODO("Not yet implemented")
+    override fun removeItemById(idList: Int, idItem: Int) {
+        shoppingListOfLists.forEach {
+            if (it.id == idList) {
+                for (item in it.shoppingList) {
+                    if (item.id == idItem) {
+                        it.shoppingList.remove(item)
+                    }
+                }
+            }
+        }
     }
 
-    override fun updateItem(id: Int, newItem: ShoppingItem) {
-        TODO("Not yet implemented")
+    override fun updateItem(idList: Int, idItem: Int, newItem: ShoppingItem) {
+        shoppingListOfLists.forEach {
+            if (it.id == idList) {
+                for (item in it.shoppingList) {
+                    if (item.id == idItem) {
+                        it.shoppingList.set(it.shoppingList.indexOf(item), newItem)
+                    }
+                }
+            }
+        }
     }
 }

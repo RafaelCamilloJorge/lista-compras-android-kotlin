@@ -7,6 +7,7 @@ import com.example.listadecompras.repositories.interfaces.ILoginRepository
 
 class LoginRepository : ILoginRepository {
     private var listUser = mutableListOf<User>()
+    //criar um user logado
     override fun login(userName: String, password: String): OnResult<Boolean> {
         var user: User? = null
         listUser.forEach {

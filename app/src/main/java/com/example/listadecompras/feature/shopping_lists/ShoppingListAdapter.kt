@@ -45,15 +45,13 @@ class ShoppingListAdapter(
 
     fun search(query: String) {
         shoppingListOfList.clear()
-
-        shoppingListOfList.addAll(items.filter { it.name.contains(query, true) })
-
+        shoppingListOfList.addAll(items.filter { it.name.startsWith(query, true) }.sortedBy { it.name })
         notifyDataSetChanged()
     }
 
     fun updateList(newList: List<ShoppingListOfList>) {
         shoppingListOfList.clear()
-        shoppingListOfList.addAll(newList)
+        shoppingListOfList.addAll(newList.sortedBy { it.name })
         notifyDataSetChanged()
     }
 

@@ -11,9 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityManageListBinding
-import com.example.listadecompras.feature.shopping_lists.ShoppingListViewModel
 import com.example.listadecompras.presentation.ShoppingListOfList
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ManageListActivity : AppCompatActivity() {
 

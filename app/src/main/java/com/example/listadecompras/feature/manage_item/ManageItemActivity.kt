@@ -5,6 +5,7 @@ import ShoppingItem
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -34,27 +35,60 @@ class ManageItemActivity : AppCompatActivity() {
         val idList = intent.getIntExtra("idList", 0)
 
         binding.saveButton.setOnClickListener {
-            saveItem(idList)
-            val resultIntent = Intent()
-            setResult(RESULT_OK, resultIntent)
-            finish()
+            if (saveItem(idList)) {
+                val resultIntent = Intent()
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            }
         }
 
     }
 
-    fun saveItem(idList: Int) {
+    fun saveItem(idList: Int): Boolean {
         val itemName = binding.nameField.text.toString()
         val itemQuantity = binding.quantityField.text.toString().toInt()
         val itemCategory = binding.categorySpinner.selectedItem.toString()
         val itemUnit = binding.unitSpinner.selectedItem.toString()
+
+        if (!validateFields()) {
+            return false
+        }
+        val categoryEnum = Category.values().firstOrNull { it.getName() == itemCategory }
+        val unitEnum = UnitOfMeasure.values().firstOrNull { it.getName() == itemUnit }
+
+        if (categoryEnum == null || unitEnum == null) {
+            Toast.makeText(this, "Erro: Categoria ou unidade inválida.", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+
         val item = ShoppingItem(
             id = manageItemViewModel.getNextId(idList) + 1,
             name = itemName.first().uppercase() + itemName.substring(1),
-            image = Category.valueOf(itemCategory).getIcon(),
+            image = categoryEnum.getIcon(),
             quantity = itemQuantity,
-            unity = UnitOfMeasure.valueOf(itemUnit),
-            category = Category.valueOf(itemCategory)
+            unity = unitEnum,
+            category = categoryEnum
         )
         manageItemViewModel.add(item, idList)
+        return true
     }
+
+
+    fun validateFields(): Boolean {
+        val itemName = binding.nameField.text.toString()
+        val itemQuantity = binding.quantityField.text.toString()
+
+        if(itemName.isEmpty()){
+            Toast.makeText(this, "Por favor, preencha o nome", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        else if(itemQuantity.isEmpty()){
+            Toast.makeText(this, "Por favor, preencha a quantidade", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
+    }
+
 }

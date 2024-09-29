@@ -7,12 +7,14 @@ import com.example.listadecompras.repositories.ListRepository
 class ManageItemViewModel(private val listRepository: ListRepository) : ViewModel() {
 
     fun add(newItem: ShoppingItem, idList: Int) {
-        val response = listRepository.addItemInList(newItem, idList)
-        return response
+        listRepository.addItemInList(newItem, idList)
     }
 
     fun getNextId(idList: Int): Int {
         val response = listRepository.getAllItemsOfList(idList)
-        return response.size
+        return response.fold(
+            onSuccess = { data -> data.size },
+            onError = { data -> 0 }
+        )
     }
 }

@@ -1,16 +1,14 @@
 package com.example.listadecompras.feature.shopping_items
 
-import Category
 import ShoppingItem
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.listadecompras.databinding.ActivityShoppingItemBinding
 import com.example.listadecompras.feature.manage_item.ManageItemActivity
-import com.example.listadecompras.feature.shopping_lists.ShoppingListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ShoppingItemActivity : ComponentActivity() {
@@ -32,7 +30,7 @@ class ShoppingItemActivity : ComponentActivity() {
 
         binding.textView.text = title
 
-        adapter = ShoppingItemAdapter(items, ::onListItemClicked)
+        adapter = ShoppingItemAdapter(items, ::onLongClick)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
@@ -54,21 +52,40 @@ class ShoppingItemActivity : ComponentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            getData(idList).let {
-                items.clear()
-                items.addAll(it)
-                adapter.updateList()
-            }
-
+            updateList()
         }
     }
 
-    private fun onListItemClicked(item: ShoppingItem) {
-        Toast.makeText(this, "Clicou em: ${item.name}", Toast.LENGTH_SHORT).show()
+    private fun onLongClick(item: ShoppingItem) {
+        val options = arrayOf("Editar", "Excluir")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Escolha uma ação")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> editItem(item)
+                    1 -> deleteItem(item)
+                }
+            }
+        builder.show()
+    }
+
+    private fun editItem(itemId: ShoppingItem) {}
+
+    private fun deleteItem(item: ShoppingItem) {
+        shoppingItemViewModel.deleteItem(idList, item.id)
+        updateList()
     }
 
     private fun getData(idList: Int): List<ShoppingItem> {
         return shoppingItemViewModel.getAllItems(idList)
+    }
+
+    private fun updateList() {
+        getData(idList).let {
+            items.clear()
+            items.addAll(it)
+            adapter.updateList()
+        }
     }
 }
 

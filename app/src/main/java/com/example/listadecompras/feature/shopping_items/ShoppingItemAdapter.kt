@@ -7,15 +7,17 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listadecompras.databinding.ListOfItemBinding
 
+
 class ShoppingItemAdapter(
     private val items: List<ShoppingItem>,
-    private val onClick: (ShoppingItem) -> Unit
-    //private val onHolder: (ShoppingItem) -> Unit
+    private val onLongClick: (ShoppingItem) -> Unit
+
 ) : RecyclerView.Adapter<ShoppingItemAdapter.ShoppingItemViewHolder>() {
 
     private var shoppingListOfItem = items.toMutableList()
 
-    inner class ShoppingItemViewHolder(val binding: ListOfItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ShoppingItemViewHolder(val binding: ListOfItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingItemViewHolder {
         val binding = ListOfItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,16 +34,15 @@ class ShoppingItemAdapter(
 
             itemCheckbox.setOnClickListener {
                 item.marked = itemCheckbox.isChecked
-                Toast.makeText(root.context, "Item marcado como comprado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(root.context, "Item marcado como comprado", Toast.LENGTH_SHORT)
+                    .show()
                 updateList()
             }
 
-
-            root.setOnClickListener {
-                onClick(item)
+            root.setOnLongClickListener {
+                onLongClick(item)
+                true
             }
-
-            //root.setOnTouchListener()
         }
     }
 
@@ -55,7 +56,8 @@ class ShoppingItemAdapter(
 
     fun search(query: String) {
         shoppingListOfItem.clear()
-        shoppingListOfItem.addAll(items.filter { it.name.startsWith(query, true) }.sortedBy { it.name })
+        shoppingListOfItem.addAll(items.filter { it.name.startsWith(query, true) }
+            .sortedBy { it.name })
         notifyDataSetChanged()
     }
 }

@@ -3,12 +3,14 @@ package com.example.listadecompras.feature.shopping_items
 import ShoppingItem
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listadecompras.databinding.ListOfItemBinding
 
 class ShoppingItemAdapter(
     private val items: List<ShoppingItem>,
     private val onClick: (ShoppingItem) -> Unit
+    //private val onHolder: (ShoppingItem) -> Unit
 ) : RecyclerView.Adapter<ShoppingItemAdapter.ShoppingItemViewHolder>() {
 
     private var shoppingListOfItem = items.toMutableList()
@@ -26,19 +28,28 @@ class ShoppingItemAdapter(
             itemName.text = item.name
             itemQuatity.text = item.quantity.toString() + " " + item.unity.getName()
             itemImage.setImageResource(item.image)
+            itemCheckbox.isChecked = item.marked
+
+            itemCheckbox.setOnClickListener {
+                item.marked = itemCheckbox.isChecked
+                Toast.makeText(root.context, "Item marcado como comprado", Toast.LENGTH_SHORT).show()
+                updateList()
+            }
+
 
             root.setOnClickListener {
                 onClick(item)
             }
 
+            //root.setOnTouchListener()
         }
     }
 
     override fun getItemCount(): Int = shoppingListOfItem.size
 
-    fun updateList(newList: List<ShoppingItem>) {
+    fun updateList() {
         shoppingListOfItem.clear()
-        shoppingListOfItem.addAll(newList.sortedBy { it.name.lowercase() })
+        shoppingListOfItem.addAll(items.sortedWith(compareBy({ it.marked }, { it.name })))
         notifyDataSetChanged()
     }
 

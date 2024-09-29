@@ -32,10 +32,28 @@ class ManageItemActivity : AppCompatActivity() {
             insets
         }
 
-        val idList = intent.getIntExtra("idList", 0)
+        val idList = intent.getIntExtra("idList", -1)
+        val idItem = intent.getIntExtra("idItem", -1)
+
+        if(idItem != -1){
+            binding.titleTextView.text = "Editar item"
+            binding.saveButton.text = "Atualizar"
+
+            val item = manageItemViewModel.getItemById(idList, idItem)
+            binding.nameField.setText(item.name)
+            binding.quantityField.setText(item.quantity.toString())
+            binding.categorySpinner.setSelection(Category.values().indexOf(item.category))
+            binding.unitSpinner.setSelection(item.unity.ordinal)
+        }
 
         binding.saveButton.setOnClickListener {
-            if (saveItem(idList)) {
+            if(idItem != -1){
+                if (updateItem(idList, idItem)) {
+                    val resultIntent = Intent()
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
+            } else if (addItem(idList)) {
                 val resultIntent = Intent()
                 setResult(RESULT_OK, resultIntent)
                 finish()
@@ -45,7 +63,7 @@ class ManageItemActivity : AppCompatActivity() {
 
     }
 
-    fun saveItem(idList: Int): Boolean {
+    fun addItem(idList: Int): Boolean {
         if (!validateFields()) {
             return false
         }
@@ -74,6 +92,39 @@ class ManageItemActivity : AppCompatActivity() {
         )
         manageItemViewModel.add(item, idList)
         return true
+    }
+
+    fun updateItem(idList: Int, idItem: Int): Boolean {
+        if (!validateFields()) {
+            return false
+        }
+
+        val itemName = binding.nameField.text.toString()
+        val itemQuantity = binding.quantityField.text.toString().toInt()
+        val itemCategory = binding.categorySpinner.selectedItem.toString()
+        val itemUnit = binding.unitSpinner.selectedItem.toString()
+
+        val categoryEnum = Category.values().firstOrNull { it.getName() == itemCategory }
+        val unitEnum = UnitOfMeasure.values().firstOrNull { it.getName() == itemUnit }
+
+        if (categoryEnum == null || unitEnum == null) {
+            Toast.makeText(this, "Erro: Categoria ou unidade inválida.", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+
+        val updatedItem = ShoppingItem(
+            id = idItem,
+            name = itemName.first().uppercase() + itemName.substring(1),
+            image = categoryEnum.getIcon(),
+            quantity = itemQuantity,
+            unity = unitEnum,
+            category = categoryEnum
+        )
+
+        manageItemViewModel.update(idList, idItem, updatedItem)
+        return true
+
     }
 
 

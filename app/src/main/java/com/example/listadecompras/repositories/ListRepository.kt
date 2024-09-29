@@ -109,7 +109,23 @@ class ListRepository : IListRepository {
         } catch (error: Exception) {
             return OnResult.Error(CustomError("Erro ao buscar os dados da lista"))
         }
+    }
 
+    override fun getItemById(idList: Int, idItem: Int): OnResult<ShoppingItem> {
+        try {
+            shoppingListOfLists.forEach {
+                if (it.id == idList) {
+                    for (item in it.shoppingList) {
+                        if (item.id == idItem) {
+                            return OnResult.Success(item)
+                        }
+                    }
+                }
+            }
+            return OnResult.Error(CustomError("Item não encontrado"))
+        } catch (error: Exception) {
+            return OnResult.Error(CustomError("Erro ao buscar o item"))
+        }
     }
 
     override fun removeItemById(idList: Int, idItem: Int): OnResult<Nothing> {

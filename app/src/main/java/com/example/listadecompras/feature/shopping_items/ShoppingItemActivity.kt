@@ -62,17 +62,22 @@ class ShoppingItemActivity : ComponentActivity() {
         builder.setTitle("Item: ${item.name}")
             .setItems(options) { dialog, which ->
                 when (which) {
-                    0 -> editItem(item)
-                    1 -> deleteItem(item)
+                    0 -> editItem(item.id)
+                    1 -> deleteItem(item.id)
                 }
             }
         builder.show()
     }
 
-    private fun editItem(itemId: ShoppingItem) {}
+    private fun editItem(idItem: Int) {
+        val intent = Intent(this, ManageItemActivity::class.java)
+        intent.putExtra("idList", idList)
+        intent.putExtra("idItem", idItem)
+        startActivityForResult(intent, 1)
+    }
 
-    private fun deleteItem(item: ShoppingItem) {
-        shoppingItemViewModel.deleteItem(idList, item.id)
+    private fun deleteItem(idItem: Int) {
+        shoppingItemViewModel.deleteItem(idList, idItem)
         updateList()
     }
 

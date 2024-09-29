@@ -1,58 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
 
     <ImageView
         android:id="@+id/item_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
         android:src="@android:drawable/ic_menu_report_image"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="5dp"></ImageView>
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
 
     <TextView
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
         android:text="{Nome Item}"
-        app:layout_constraintLeft_toRightOf="@+id/item_image"
-        app:layout_constraintTop_toTopOf="@id/item_image"
-        android:layout_marginLeft="10dp"
         android:textStyle="bold"
-        ></TextView>
+        app:layout_constraintLeft_toRightOf="@+id/item_image"
+        app:layout_constraintTop_toTopOf="@id/item_image"></TextView>
 
     <TextView
         android:id="@+id/item_quatity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/item_image"
-        app:layout_constraintTop_toBottomOf="@id/item_name"
-        android:text="{Quantidade Item}"
         android:layout_marginTop="2dp"
-        app:layout_constraintLeft_toLeftOf="@id/item_name"
+        android:text="{Quantidade Item}"
+        android:textColor="@color/gray_600"
         android:textSize="10sp"
-        android:textColor="@color/gray_600"></TextView>
+        app:layout_constraintLeft_toLeftOf="@id/item_name"
+        app:layout_constraintLeft_toRightOf="@+id/item_image"
+        app:layout_constraintTop_toBottomOf="@id/item_name"></TextView>
 
     <CheckBox
         android:id="@+id/item_checkbox"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/item_image"
+        android:layout_width="26dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="24dp"
         app:layout_constraintBottom_toBottomOf="@id/item_image"
-        android:layout_marginRight="10dp"
-        ></CheckBox>
-
-
-
-
-
-
-
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/item_image"></CheckBox>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

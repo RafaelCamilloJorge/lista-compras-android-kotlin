@@ -4,106 +4,115 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="40dp"
     android:layout_marginTop="80dp">
 
     <TextView
         android:id="@+id/title_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:text="Adicionar item"
         android:textSize="35sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/name_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="45dp"
         android:text="nome"
         android:textColor="@color/gray_600"
-        app:layout_constraintTop_toBottomOf="@id/title_textView"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="45dp"/>
+        app:layout_constraintTop_toBottomOf="@id/title_textView" />
 
     <EditText
         android:id="@+id/name_field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="5dp"
         android:hint="Digite o nome do item"
         android:padding="20dp"
-        app:layout_constraintTop_toBottomOf="@id/name_textView"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="5dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_textView" />
 
     <TextView
         android:id="@+id/quantity_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="40dp"
         android:text="Quantidade"
-        app:layout_constraintTop_toBottomOf="@id/name_field"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="40dp"/>
+        app:layout_constraintTop_toBottomOf="@id/name_field" />
 
     <EditText
         android:id="@+id/quantity_field"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:hint="Quantidade"
-        android:padding="20dp"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/quantity_textView"
+        android:padding="20dp"
         app:layout_constraintLeft_toLeftOf="@+id/quantity_textView"
-        android:layout_marginTop="5dp"/>
+        app:layout_constraintTop_toBottomOf="@id/quantity_textView" />
 
     <TextView
         android:id="@+id/unit_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:text="Unidade"
-        app:layout_constraintTop_toTopOf="@+id/quantity_textView"
-        app:layout_constraintLeft_toRightOf="@+id/quantity_field"/>
+        app:layout_constraintLeft_toRightOf="@+id/quantity_field"
+        app:layout_constraintTop_toTopOf="@+id/quantity_textView" />
 
     <Spinner
         android:id="@+id/unit_spinner"
         android:layout_width="0dp"
         android:layout_height="0dp"
+
+        android:layout_marginRight="24dp"
+        android:entries="@array/spinner_Unit"
         app:layout_constraintBottom_toBottomOf="@+id/quantity_field"
         app:layout_constraintLeft_toLeftOf="@+id/unit_textView"
-        app:layout_constraintTop_toTopOf="@id/quantity_field"
         app:layout_constraintRight_toRightOf="parent"
-        android:entries="@array/spinner_Unit"/>
+        app:layout_constraintTop_toTopOf="@id/quantity_field" />
 
     <TextView
         android:id="@+id/category_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="40dp"
         android:text="Categoria"
         android:textColor="@color/gray_600"
-        app:layout_constraintTop_toBottomOf="@id/unit_spinner"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="40dp"/>
+        app:layout_constraintTop_toBottomOf="@id/unit_spinner" />
 
     <Spinner
         android:id="@+id/category_spinner"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        app:layout_constraintTop_toBottomOf="@id/category_textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/spinner_Category" />
+        android:entries="@array/spinner_Category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/category_textView" />
 
     <Button
         android:id="@+id/save_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="24dp"
         android:text="Adicionar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="24dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

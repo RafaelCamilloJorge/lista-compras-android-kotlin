@@ -3,6 +3,7 @@ package com.example.listadecompras.feature.login
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -32,13 +33,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.loginButton.setOnClickListener {
-            val username = binding.emailField.text.toString()
+            val email = binding.emailField.text.toString()
             val password = binding.passwordField.text.toString()
 
-            if (username.isBlank() || password.isBlank()) {
+            if (email.isBlank() || password.isBlank()) {
                 showErrorMsg("É necessário preencher o usuário e a senha.")
+                return@setOnClickListener
+            } else if(!isValidEmail(email)) {
+                showErrorMsg("Email inválido.")
+                return@setOnClickListener
             } else {
-                val result = loginViewModel.login(username, password)
+                val result = loginViewModel.login(email, password)
 
                 when (result) {
                     is OnResult.Success -> {
@@ -71,6 +76,10 @@ class MainActivity : AppCompatActivity() {
 
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
 }

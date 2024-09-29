@@ -11,6 +11,18 @@ class ManageItemViewModel(private val listRepository: ListRepository) : ViewMode
         listRepository.addItemInList(newItem, idList)
     }
 
+    fun update(idList: Int, idItem: Int, item: ShoppingItem) {
+        listRepository.updateItem(idList, idItem, item)
+    }
+
+    fun getItemById(idList: Int, idItem: Int): ShoppingItem {
+        val response = listRepository.getItemById(idList, idItem)
+        return response.fold(
+            onSuccess = { data -> data },
+            onError = { throw Exception("Item not found") }
+        )
+    }
+
     fun getNextId(idList: Int): Int {
         val response = listRepository.getAllItemsOfList(idList)
         return response.fold(

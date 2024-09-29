@@ -21,6 +21,8 @@ interface IListRepository {
 
     fun getAllItemsOfList(idList: Int): OnResult<List<ShoppingItem>>
 
+    fun getItemById(idList: Int, idItem: Int): OnResult<ShoppingItem>
+
     fun removeItemById(idShoppingItem: Int, idItem: Int): OnResult<Nothing>
 
     fun updateItem(idList: Int, idItem: Int, newItem: ShoppingItem): OnResult<Nothing>

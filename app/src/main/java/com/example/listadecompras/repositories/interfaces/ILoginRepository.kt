@@ -3,6 +3,6 @@ package com.example.listadecompras.repositories.interfaces
 import OnResult
 
 interface ILoginRepository {
-    fun login(userName: String, password: String): OnResult<Boolean>
-    fun register(userName: String, password: String): OnResult<Boolean>
+    fun login(email: String, password: String): OnResult<Boolean>
+    fun register(email: String, userName: String, password: String): OnResult<Boolean>
 }

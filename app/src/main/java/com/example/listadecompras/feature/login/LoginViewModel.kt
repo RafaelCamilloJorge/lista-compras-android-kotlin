@@ -6,7 +6,7 @@ import com.example.listadecompras.repositories.LoginRepository
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
-    fun login(username: String, password: String): OnResult<Boolean> {
-        return loginRepository.login(username, password)
+    fun login(email: String, password: String): OnResult<Boolean> {
+        return loginRepository.login(email, password)
     }
 }

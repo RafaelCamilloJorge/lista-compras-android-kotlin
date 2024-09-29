@@ -9,16 +9,16 @@ class LoginRepository : ILoginRepository {
     private var listUser = mutableListOf<User>()
 
     //criar um user logado
-    override fun login(userName: String, password: String): OnResult<Boolean> {
+    override fun login(email: String, password: String): OnResult<Boolean> {
         try {
             var user: User? = null
             listUser.forEach {
-                if (it.userName.equals(userName) && it.password.equals(password)) {
+                if (it.email.equals(email) && it.password.equals(password)) {
                     user = it
                 }
             }
 
-            if (userName == "admin" && password == "admin") {
+            if (email == "admin@gmail.com" && password == "admin") {
                 return OnResult.Success(true)
             }
 
@@ -32,9 +32,9 @@ class LoginRepository : ILoginRepository {
         }
     }
 
-    override fun register(userName: String, password: String): OnResult<Boolean> {
+    override fun register(email: String, userName: String, password: String): OnResult<Boolean> {
         try {
-            listUser.add(User(userName, password))
+            listUser.add(User(email, userName, password))
             return OnResult.Success(true)
         } catch (e: Exception) {
             return OnResult.Error(CustomError(e.message ?: "Houve um erro ao registrar"))

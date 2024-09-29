@@ -51,7 +51,6 @@ class ShoppingListActivity : ComponentActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -73,7 +72,7 @@ class ShoppingListActivity : ComponentActivity() {
         val ShoppingListOfList = ShoppingListOfList(
             id = 1,
             name = "Lista de Compras",
-            image = "",
+            image = null,
             shoppingList = mutableListOf(
                 ShoppingItem(
                     id = 1,
@@ -108,7 +107,11 @@ class ShoppingListActivity : ComponentActivity() {
         builder.show()
     }
 
-    private fun editItem(itemId: ShoppingListOfList) {}
+    private fun editItem(list: ShoppingListOfList) {
+        val intent = Intent(this, ManageListActivity::class.java)
+        intent.putExtra("listData", list)
+        startActivityForResult(intent, 1)
+    }
 
     private fun deleteItem(item: ShoppingListOfList) {
         shoppingListViewModel.removeListOfList(item.id)

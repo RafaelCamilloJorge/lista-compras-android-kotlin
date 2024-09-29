@@ -31,6 +31,6 @@ class ShoppingListOfList(
     }
 
     fun getImageList(): Uri? {
-        return image?.let{ Uri.parse(it) }
+        return image?.let { Uri.parse(it) }
     }
 }

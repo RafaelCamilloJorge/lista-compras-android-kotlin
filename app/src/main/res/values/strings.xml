@@ -3,9 +3,9 @@
     
     <string-array name="spinner_Category">
         <item>Vegetais</item>
-        <item>Peixes</item>
         <item>Carnes</item>
         <item>Laticínio</item>
+        <item>Peixes</item>
         <item>Grãos</item>
     </string-array>
 

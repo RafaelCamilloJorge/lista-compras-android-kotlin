@@ -14,13 +14,4 @@ enum class UnitOfMeasure : Serializable {
             unit -> "un"
         }
     }
-
-    fun getIcon(): String {
-        return when (this) {
-            kilo -> ""
-            gram -> ""
-            liter -> ""
-            unit -> ""
-        }
-    }
 }

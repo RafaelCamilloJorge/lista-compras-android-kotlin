@@ -23,12 +23,7 @@ class ShoppingItemActivity : ComponentActivity() {
         binding = ActivityShoppingItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        idList = intent.getIntExtra("idList", 0)
-        val title = intent.getStringExtra("title")
-
-        items = getData(idList).toMutableList()
-
-        binding.textView.text = title
+        getDataIntent()
 
         adapter = ShoppingItemAdapter(items, ::onLongClick)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -36,8 +31,7 @@ class ShoppingItemActivity : ComponentActivity() {
 
         binding.fab.setOnClickListener {
             val intent = Intent(this, ManageItemActivity::class.java)
-            intent.putExtra("idList", idList)
-
+            intent.putExtra("idListListOfList", idList)
             startActivityForResult(intent, 1)
         }
 
@@ -45,8 +39,6 @@ class ShoppingItemActivity : ComponentActivity() {
             val searchText = text.toString()
             adapter.search(searchText)
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -69,7 +61,12 @@ class ShoppingItemActivity : ComponentActivity() {
         builder.show()
     }
 
-    private fun editItem(itemId: ShoppingItem) {}
+    private fun editItem(item: ShoppingItem) {
+        val intent = Intent(this, ManageItemActivity::class.java)
+        intent.putExtra("listData", item)
+        intent.putExtra("idListListOfList", idList)
+        startActivityForResult(intent, 1)
+    }
 
     private fun deleteItem(item: ShoppingItem) {
         shoppingItemViewModel.deleteItem(idList, item.id)
@@ -86,6 +83,15 @@ class ShoppingItemActivity : ComponentActivity() {
             items.addAll(it)
             adapter.updateList()
         }
+    }
+
+    private fun getDataIntent() {
+        idList = intent.getIntExtra("idList", 1)
+        val title = intent.getStringExtra("title")
+
+        items = getData(idList).toMutableList()
+
+        binding.textView.text = title
     }
 }
 

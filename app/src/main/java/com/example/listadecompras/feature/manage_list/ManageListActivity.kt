@@ -11,7 +11,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityManageListBinding
-import com.example.listadecompras.feature.shopping_lists.ShoppingListViewModel
 import com.example.listadecompras.presentation.ShoppingListOfList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -20,12 +19,15 @@ class ManageListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManageListBinding
     private var selectedImage: Uri? = null
     private val manageListViewModel: ManageListViewModel by viewModel()
+    private var shoppingListOfList: ShoppingListOfList? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityManageListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        getDataIntentForEditList()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -34,36 +36,21 @@ class ManageListActivity : AppCompatActivity() {
         }
 
         binding.fab.setOnClickListener {
-            selectImageFromGallery()
+            val intent = Intent(Intent.ACTION_PICK).apply {
+                type = "image/*"
+            }
+            startForResult.launch(intent)
         }
 
         binding.saveButton.setOnClickListener {
             val listName = binding.nameField.text.toString()
-
             if (listName.isNotEmpty()) {
-                val newList = ShoppingListOfList(
-                    id = manageListViewModel.getNextId(),
-                    name = listName.first().uppercase() + listName.substring(1),
-                    image = selectedImage.toString(),
-                    shoppingList = mutableListOf()
-                )
-
-                val resultIntent = Intent()
-                manageListViewModel.add(newList)
-                setResult(RESULT_OK, resultIntent)
-                finish()
+                if (shoppingListOfList != null) editList() else createNewList()
             } else {
                 Toast.makeText(this, "Por favor, preencha o nome", Toast.LENGTH_SHORT).show()
             }
         }
 
-    }
-
-    private fun selectImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK).apply {
-            type = "image/*"
-        }
-        startForResult.launch(intent)
     }
 
     private val startForResult =
@@ -74,4 +61,48 @@ class ManageListActivity : AppCompatActivity() {
                 binding.listImageImageView.setImageURI(selectedImage)
             }
         }
+
+    private fun createNewList() {
+        val listName = binding.nameField.text.toString()
+
+        val newList = ShoppingListOfList(
+            id = manageListViewModel.getNextId(),
+            name = listName.first().uppercase() + listName.substring(1),
+            image = selectedImage.toString(),
+            shoppingList = mutableListOf()
+        )
+
+        manageListViewModel.add(newList)
+        goBack()
+    }
+
+    private fun editList() {
+        val listName = binding.nameField.text.toString()
+        val newList = ShoppingListOfList(
+            id = shoppingListOfList!!.getIdList(),
+            name = listName.first().uppercase() + listName.substring(1),
+            image = selectedImage.toString(),
+            shoppingList = shoppingListOfList!!.getItems()
+        )
+
+        manageListViewModel.update(shoppingListOfList!!.getIdList(), newList)
+        goBack()
+    }
+
+    private fun goBack() {
+        val resultIntent = Intent()
+        setResult(RESULT_OK, resultIntent)
+        finish()
+    }
+
+    private fun getDataIntentForEditList() {
+        val list = intent.getSerializableExtra("listData") as ShoppingListOfList?
+        if (list != null) {
+            shoppingListOfList = list
+            binding.nameField.setText(list.getNameList())
+            binding.listImageImageView.setImageURI(list.getImageList())
+            binding.saveButton.text = "Atualizar"
+            binding.titleTextView.text = "Editar lista"
+        }
+    }
 }

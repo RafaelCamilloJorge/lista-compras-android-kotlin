@@ -15,6 +15,10 @@ class ShoppingListViewModel(private val listRepository: ListRepository) : ViewMo
         return listRepository.getListsOfListByName(name)
     }
 
+    fun removeListOfList(id: Int) {
+        listRepository.removeListOfListById(id)
+    }
+
     //temporário essa fun
     fun add(item: ShoppingListOfList) {
         listRepository.createShoppingListOfList(item);

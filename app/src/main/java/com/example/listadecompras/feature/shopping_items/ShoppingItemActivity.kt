@@ -59,7 +59,7 @@ class ShoppingItemActivity : ComponentActivity() {
     private fun onLongClick(item: ShoppingItem) {
         val options = arrayOf("Editar", "Excluir")
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Escolha uma ação")
+        builder.setTitle("Item: ${item.name}")
             .setItems(options) { dialog, which ->
                 when (which) {
                     0 -> editItem(item)

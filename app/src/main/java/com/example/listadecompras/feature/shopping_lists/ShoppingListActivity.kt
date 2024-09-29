@@ -2,14 +2,12 @@ package com.example.listadecompras.feature.shopping_lists
 
 import Category
 import ShoppingItem
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityShoppingListBinding
 import com.example.listadecompras.feature.login.MainActivity
 import com.example.listadecompras.feature.manage_list.ManageListActivity
@@ -32,7 +30,7 @@ class ShoppingListActivity : ComponentActivity() {
 
         getData()
 
-        adapter = ShoppingListAdapter(shoppingListOfList, ::onListItemClicked)
+        adapter = ShoppingListAdapter(shoppingListOfList, ::onListItemClicked, ::onLongClick)
         val layoutManager = GridLayoutManager(this, 2)
 
         binding.recyclerView.adapter = adapter
@@ -43,7 +41,7 @@ class ShoppingListActivity : ComponentActivity() {
             startActivityForResult(intent, 1)
         }
 
-        binding.searchField.addTextChangedListener{ text ->
+        binding.searchField.addTextChangedListener { text ->
             val searchText = text.toString()
             adapter.search(searchText)
         }
@@ -59,26 +57,19 @@ class ShoppingListActivity : ComponentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK) {
-                getData()
-                adapter.updateList(shoppingListOfList)
+            getData()
+            adapter.updateList(shoppingListOfList)
         }
-    }
-
-    private fun onListItemClicked(list_of_list: ShoppingListOfList) {
-        val intent = Intent(this, ShoppingItemActivity::class.java)
-        intent.putExtra("title", list_of_list.getNameList())
-        intent.putExtra("idList", list_of_list.getIdList())
-        startActivity(intent)
     }
 
     private fun getData() {
         val result = shoppingListViewModel.getAllLists()
         result.fold(
-            onSuccess = { data -> shoppingListOfList = data.toMutableList()},
+            onSuccess = { data -> shoppingListOfList = data.toMutableList() },
             onError = { error -> println(error.messageError()) })
     }
 
-    private fun mock(){
+    private fun mock() {
         val ShoppingListOfList = ShoppingListOfList(
             id = 1,
             name = "Lista de Compras",
@@ -92,10 +83,36 @@ class ShoppingListActivity : ComponentActivity() {
                     image = Category.fish.getIcon(),
                     category = Category.fish
                 ),
-                )
             )
+        )
         shoppingListViewModel.add(ShoppingListOfList)
     }
 
+    private fun onListItemClicked(listOfList: ShoppingListOfList) {
+        val intent = Intent(this, ShoppingItemActivity::class.java)
+        intent.putExtra("title", listOfList.getNameList())
+        intent.putExtra("idList", listOfList.getIdList())
+        startActivity(intent)
+    }
 
+    private fun onLongClick(listOfList: ShoppingListOfList) {
+        val options = arrayOf("Editar", "Excluir")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Lista: ${listOfList.getNameList()}")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> editItem(listOfList)
+                    1 -> deleteItem(listOfList)
+                }
+            }
+        builder.show()
+    }
+
+    private fun editItem(itemId: ShoppingListOfList) {}
+
+    private fun deleteItem(item: ShoppingListOfList) {
+        shoppingListViewModel.removeListOfList(item.id)
+        getData()
+        adapter.updateList(shoppingListOfList)
+    }
 }

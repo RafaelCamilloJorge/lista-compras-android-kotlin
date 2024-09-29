@@ -10,13 +10,15 @@ import com.example.listadecompras.presentation.ShoppingListOfList
 
 class ShoppingListAdapter(
     private val items: List<ShoppingListOfList>,
-    private val onClick: (ShoppingListOfList) -> Unit
+    private val onClick: (ShoppingListOfList) -> Unit,
+    private val onLongClick: (ShoppingListOfList) -> Unit
 ) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
 
-   private var shoppingListOfList = items.toMutableList()
+    private var shoppingListOfList = items.toMutableList()
 
 
-    inner class ShoppingListViewHolder(val binding: ListOfListBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ShoppingListViewHolder(val binding: ListOfListBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListViewHolder {
         val binding = ListOfListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,7 +28,7 @@ class ShoppingListAdapter(
     override fun onBindViewHolder(holder: ShoppingListViewHolder, position: Int) {
         val item = shoppingListOfList[position]
         with(holder.binding) {
-            if(item.image != null){
+            if (item.image != null) {
                 Glide.with(holder.itemView.context)
                     .load(item.image)
                     .centerCrop()
@@ -38,6 +40,10 @@ class ShoppingListAdapter(
             root.setOnClickListener {
                 onClick(item)
             }
+            root.setOnLongClickListener {
+                onLongClick(item)
+                true
+            }
         }
     }
 
@@ -45,7 +51,8 @@ class ShoppingListAdapter(
 
     fun search(query: String) {
         shoppingListOfList.clear()
-        shoppingListOfList.addAll(items.filter { it.name.startsWith(query, true) }.sortedBy { it.name })
+        shoppingListOfList.addAll(items.filter { it.name.startsWith(query, true) }
+            .sortedBy { it.name })
         notifyDataSetChanged()
     }
 

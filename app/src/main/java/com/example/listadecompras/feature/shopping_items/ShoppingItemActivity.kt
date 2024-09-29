@@ -48,6 +48,7 @@ class ShoppingItemActivity : ComponentActivity() {
             adapter.search(searchText)
         }
 
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -56,7 +57,7 @@ class ShoppingItemActivity : ComponentActivity() {
             getData(idList).let {
                 items.clear()
                 items.addAll(it)
-                adapter.updateList(items)
+                adapter.updateList()
             }
 
         }

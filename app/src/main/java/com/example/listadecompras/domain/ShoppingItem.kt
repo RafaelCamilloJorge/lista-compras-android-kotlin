@@ -6,5 +6,6 @@ class ShoppingItem(
     var image: Int,
     var quantity: Int = 0,
     var unity: UnitOfMeasure,
-    var category: Category
+    var category: Category,
+    var marked: Boolean = false
 ) : Serializable

@@ -35,10 +35,10 @@ class ListRepository : IListRepository {
                     list.add(it)
                 }
             }
+            return OnResult.Success(list)
         } catch (e: Exception) {
             return OnResult.Error(CustomError("Erro ao realizar a busca"))
         }
-        return OnResult.Success(list)
     }
 
     override fun getListsOfListById(id: Int): OnResult<ShoppingListOfList> {
@@ -48,10 +48,10 @@ class ListRepository : IListRepository {
                     return OnResult.Success(it)
                 }
             }
+            return OnResult.Error(CustomError("Lista não encontrada"))
         } catch (e: Exception) {
             return OnResult.Error(CustomError("Erro ao realizar a busca"))
         }
-        return OnResult.Error(CustomError("Lista não encontrada"))
     }
 
     override fun removeListOfListById(id: Int): OnResult<Nothing> {
@@ -62,10 +62,10 @@ class ListRepository : IListRepository {
                     return OnResult.Success(null) as Nothing;
                 }
             }
+            return OnResult.Error(CustomError("Lista não encontrada"))
         } catch (e: Exception) {
             return OnResult.Error(CustomError("Erro ao deletar lista"))
         }
-        return OnResult.Error(CustomError("Lista não encontrada"))
     }
 
     override fun updateShoppingList(id: Int, newList: ShoppingListOfList): OnResult<Nothing> {
@@ -74,54 +74,77 @@ class ListRepository : IListRepository {
                 if (it.id == id) {
                     val index: Int = shoppingListOfLists.indexOf(it)
                     shoppingListOfLists[index] = newList
+                    return OnResult.Success(null) as Nothing
                 }
             }
-            return OnResult.Success(null) as Nothing;
+            return OnResult.Success(null) as Nothing
         } catch (e: Exception) {
             return OnResult.Error(CustomError("Erro ao atualizar a lista"))
         }
     }
 
     //////////////////somente itens//////////////////
-    override fun addItemInList(item: ShoppingItem, idList: Int) {
-        shoppingListOfLists.forEach {
-            if (it.id == idList) {
-                it.shoppingList.add(item)
-                return
+    override fun addItemInList(item: ShoppingItem, idList: Int): OnResult<Nothing> {
+        try {
+            shoppingListOfLists.forEach {
+                if (it.id == idList) {
+                    it.shoppingList.add(item)
+                    return OnResult.Success(null) as Nothing
+                }
             }
+            return OnResult.Error(CustomError("Erro ao adicionar o item"))
+        } catch (error: Exception) {
+            return OnResult.Error(CustomError("Erro ao adicionar o item"))
         }
     }
 
-    override fun getAllItemsOfList(idList: Int): List<ShoppingItem> {
-        shoppingListOfLists.forEach {
-            if (it.id == idList) {
-                return it.shoppingList
+    override fun getAllItemsOfList(idList: Int): OnResult<List<ShoppingItem>> {
+        try {
+            shoppingListOfLists.forEach {
+                if (it.id == idList) {
+                    return OnResult.Success(it.shoppingList)
+                }
             }
+            return OnResult.Success(emptyList())
+        } catch (error: Exception) {
+            return OnResult.Error(CustomError("Erro ao buscar os dados da lista"))
         }
-        return emptyList()
+
     }
 
-    override fun removeItemById(idList: Int, idItem: Int) {
-        shoppingListOfLists.forEach {
-            if (it.id == idList) {
-                for (item in it.shoppingList) {
-                    if (item.id == idItem) {
-                        it.shoppingList.remove(item)
+    override fun removeItemById(idList: Int, idItem: Int): OnResult<Nothing> {
+        try {
+            shoppingListOfLists.forEach {
+                if (it.id == idList) {
+                    for (item in it.shoppingList) {
+                        if (item.id == idItem) {
+                            it.shoppingList.remove(item)
+                            return OnResult.Success(null) as Nothing
+                        }
                     }
                 }
             }
+            return OnResult.Error(CustomError("Item não encontrado"))
+        } catch (error: Exception) {
+            return OnResult.Error(CustomError("Erro ao remover o item"))
         }
     }
 
-    override fun updateItem(idList: Int, idItem: Int, newItem: ShoppingItem) {
-        shoppingListOfLists.forEach {
-            if (it.id == idList) {
-                for (item in it.shoppingList) {
-                    if (item.id == idItem) {
-                        it.shoppingList.set(it.shoppingList.indexOf(item), newItem)
+    override fun updateItem(idList: Int, idItem: Int, newItem: ShoppingItem): OnResult<Nothing> {
+        try {
+            shoppingListOfLists.forEach {
+                if (it.id == idList) {
+                    for (item in it.shoppingList) {
+                        if (item.id == idItem) {
+                            it.shoppingList[it.shoppingList.indexOf(item)] = newItem
+                            return OnResult.Success(null) as Nothing
+                        }
                     }
                 }
             }
+            return OnResult.Error(CustomError("Item não encontrado"))
+        } catch (error: Exception) {
+            return OnResult.Error(CustomError("Erro ao atualizar o item"))
         }
     }
 }

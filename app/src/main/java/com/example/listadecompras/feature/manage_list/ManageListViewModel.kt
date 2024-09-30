@@ -12,11 +12,11 @@ class ManageListViewModel(
         response.fold(onSuccess = {}, onError = { data -> println(data.messageError()) })
     }
 
-    fun getById(id: Int) {
+    fun getById(id: Int): ShoppingListOfList {
         val response = listRepository.getListsOfListById(id)
-        response.fold(
-            onSuccess = { data -> println(data.id) },
-            onError = { error -> println(error) },
+        return response.fold(
+            onSuccess = { data -> data },
+            onError = { throw Exception("Item not found") }
         )
     }
 

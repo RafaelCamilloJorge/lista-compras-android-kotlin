@@ -18,8 +18,10 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import android.util.Patterns
+import android.widget.Toast
+import com.example.listadecompras.commons.validates.LoginValidate
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(), RegisterContracts.View {
     private lateinit var binding: ActivityRegisterBinding
     private val registerViewModel: RegisterViewModel by viewModel()
 
@@ -36,85 +38,40 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.registerButton.setOnClickListener {
-            if (!validateFields()) {
-                return@setOnClickListener
-            }
-
-            val result: OnResult<Boolean> = registerViewModel.register(
-                binding.emailField.text.toString(),
+            val statusValidate = LoginValidate().validateCreateAccount(
                 binding.userNameField.text.toString(),
-                binding.passwordField.text.toString()
+                binding.emailField.text.toString(),
+                binding.passwordField.text.toString(),
+                binding.confirmPasswordField.text.toString(),
             )
-            when (result) {
-                is OnResult.Success -> createAccountMsg()
-                is OnResult.Error -> showErrorMsg(result.exception.messageError())
-                else -> showErrorMsg("Erro desconhecido ao criar conta.")
+
+            if (statusValidate != null) {
+                showError(statusValidate)
+            } else {
+                registerViewModel.register(
+                    binding.emailField.text.toString(),
+                    binding.userNameField.text.toString(),
+                    binding.passwordField.text.toString(),
+                    onSuccess = {
+                        showError("Conta criada com sucesso!")
+                        goBackToLoginActivity()
+                    },
+                    onError = {
+                        showError(it)
+                    })
             }
         }
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            goBackToLoginActivity()
         }
     }
 
-    private fun showErrorMsg(errorMessage: String) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setMessage(errorMessage)
-            .setTitle("Erro ao criar conta")
-            .setNeutralButton("Ok") { dialog, _ ->
-                dialog.dismiss()
-            }
-
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+    override fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun createAccountMsg() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            .setTitle("Sucesso")
-            .setMessage("Conta criada com sucesso!")
-            .setNeutralButton("Ok") { dialog, _ ->
-                dialog.dismiss()
-            }
-
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-        clearFields()
-    }
-
-    private fun validateFields(): Boolean {
-        if(binding.userNameField.text.toString().trim().isEmpty()) {
-            showErrorMsg("Preencha o campo de nome de usuário")
-            return false
-        } else if (binding.emailField.text.toString().trim().isEmpty()) {
-            showErrorMsg("Preencha o campo de e-mail")
-            return false
-        } else if (!isValidEmail(binding.emailField.text.toString())) {
-            showErrorMsg("E-mail inválido")
-            return false
-        } else if (binding.passwordField.text.toString().trim().isEmpty()) {
-            showErrorMsg("Preencha o campo de senha")
-            return false
-        } else if (binding.confirmPasswordField.text.toString().trim().isEmpty()) {
-            showErrorMsg("Preencha o campo de confirmação de senha")
-            return false
-        } else if (binding.passwordField.text.toString() != binding.confirmPasswordField.text.toString()) {
-            showErrorMsg("As senhas não coincidem")
-            return false
-        }
-
-        return true
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    private fun clearFields() {
-        binding.userNameField.text.clear()
-        binding.emailField.text.clear()
-        binding.passwordField.text.clear()
-        binding.confirmPasswordField.text.clear()
+    override fun goBackToLoginActivity() {
+        finish()
     }
 }

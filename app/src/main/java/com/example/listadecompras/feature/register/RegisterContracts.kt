@@ -1,14 +1,15 @@
-package com.example.listadecompras.feature.login
+package com.example.listadecompras.feature.register
 
-class LoginContracts {
+class RegisterContracts {
     interface View {
         fun showError(message: String)
-        fun navigateToListView()
+        fun goBackToLoginActivity()
     }
 
     interface ViewModel {
-        fun login(
+        fun register(
             email: String,
+            username: String,
             password: String,
             onSuccess: (Boolean) -> Unit,
             onError: (String) -> Unit

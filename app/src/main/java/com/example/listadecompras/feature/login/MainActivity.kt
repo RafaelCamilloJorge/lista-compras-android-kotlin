@@ -58,9 +58,9 @@ class MainActivity : AppCompatActivity(), LoginContracts.View {
     private fun login(email: String, password: String) {
         loginViewModel.login(email, password,
             onSuccess = { data ->
+                navigateToListView()
                 binding.emailField.text.clear()
                 binding.passwordField.text.clear()
-                navigateToListView()
             },
             onError = { error ->
                 showError(error)

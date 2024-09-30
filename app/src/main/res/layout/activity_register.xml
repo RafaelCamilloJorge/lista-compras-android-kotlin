@@ -44,7 +44,8 @@
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_field" />
+        app:layout_constraintTop_toBottomOf="@+id/text_field"
+        />
 
     <EditText
         android:id="@+id/email_field"
@@ -57,7 +58,7 @@
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userName_field" />
+        app:layout_constraintTop_toBottomOf="@+id/userName_field"/>
 
 
     <EditText
@@ -71,7 +72,7 @@
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_field" />
+        app:layout_constraintTop_toBottomOf="@id/email_field"/>
 
     <EditText
         android:id="@+id/confirm_password_field"
@@ -95,7 +96,8 @@
         android:text="Registrar"
         app:layout_constraintBottom_toTopOf="@+id/back_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/button"/>
 
     <Button
         android:id="@+id/back_button"
@@ -106,6 +108,7 @@
         android:text="Voltar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/button"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

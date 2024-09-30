@@ -150,7 +150,7 @@ class ListRepository : IListRepository {
         try {
             shoppingListOfLists.forEach {
                 if (it.id == idList) {
-                    for (item: ShoppingItem in it.shoppingList) {
+                    for (item in it.shoppingList) {
                         if (item.id == idItem) {
                             it.shoppingList[it.shoppingList.indexOf(item)] = newItem
                             return OnResult.Success(null) as Nothing

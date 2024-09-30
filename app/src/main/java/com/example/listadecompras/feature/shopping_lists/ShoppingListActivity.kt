@@ -48,8 +48,7 @@ class ShoppingListActivity : ComponentActivity() {
 
         binding.exitButton.setOnClickListener {
             shoppingListViewModel.logout()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
     }
 

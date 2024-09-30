@@ -3,6 +3,8 @@ package com.example.listadecompras.feature.manage_list
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,13 +16,16 @@ import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityManageListBinding
 import com.example.listadecompras.presentation.ShoppingListOfList
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
+import java.io.FileOutputStream
 
 class ManageListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityManageListBinding
     private var selectedImage: Uri? = null
     private val manageListViewModel: ManageListViewModel by viewModel()
-    private lateinit var list: ShoppingListOfList
+    private var shoppingListOfList: ShoppingListOfList? = null
+    private var imageName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,18 +38,7 @@ class ManageListActivity : AppCompatActivity() {
             insets
         }
 
-
-        val idList = intent.getIntExtra("idList", -1)
-
-        if(idList != -1){
-            binding.titleTextView.text = "Editar Lista"
-            binding.saveButton.text = "Atualizar"
-
-            list = manageListViewModel.getById(idList)
-            binding.nameField.setText(list.getNameList())
-
-           
-        }
+        getDataIntentForEditList()
 
         binding.fab.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK).apply {
@@ -56,12 +50,11 @@ class ManageListActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             val listName = binding.nameField.text.toString()
             if (listName.isNotEmpty()) {
-                if(idList != -1) editList(list) else createNewList()
+                if (shoppingListOfList != null) editList(shoppingListOfList!!) else createNewList()
             } else {
                 Toast.makeText(this, "Por favor, preencha o nome", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     private val startForResult =
@@ -76,33 +69,105 @@ class ManageListActivity : AppCompatActivity() {
     private fun createNewList() {
         val listName = binding.nameField.text.toString()
 
-        val newList = ShoppingListOfList(
-            id = manageListViewModel.getNextId(),
-            name = listName.first().uppercase() + listName.substring(1),
-            image = selectedImage.toString(),
-            shoppingList = mutableListOf()
-        )
-
-        manageListViewModel.add(newList)
-        goBack()
+        if (saveImageIfNecessary()) {
+            val newList = ShoppingListOfList(
+                id = manageListViewModel.getNextId(),
+                name = listName.first().uppercase() + listName.substring(1),
+                image = imageName,
+                shoppingList = mutableListOf()
+            )
+            manageListViewModel.add(newList)
+            goBack()
+        }
     }
 
     private fun editList(list: ShoppingListOfList) {
         val listName = binding.nameField.text.toString()
-        val newList = ShoppingListOfList(
-            id = list.getIdList(),
-            name = listName.first().uppercase() + listName.substring(1),
-            image = selectedImage.toString(),
-            shoppingList = list.getItems()
-        )
 
-        manageListViewModel.update(list.getIdList(), newList)
-        goBack()
+        if (saveImageIfNecessary()) {
+            val newList = ShoppingListOfList(
+                id = list.getIdList(),
+                name = listName.first().uppercase() + listName.substring(1),
+                image = imageName,
+                shoppingList = list.getItems()
+            )
+            manageListViewModel.update(list.getIdList(), newList)
+            goBack()
+        }
     }
 
     private fun goBack() {
         val resultIntent = Intent()
         setResult(RESULT_OK, resultIntent)
         finish()
+    }
+
+    private fun getDataIntentForEditList() {
+        val list = intent.getSerializableExtra("listData") as ShoppingListOfList?
+        if (list != null) {
+            shoppingListOfList = list
+            binding.nameField.setText(list.getNameList())
+            binding.saveButton.text = "Atualizar"
+            binding.titleTextView.text = "Editar lista"
+            loadImageWithGlideIfExist()
+        }
+    }
+
+    private fun saveImageIfNecessary(): Boolean {
+        if (selectedImage != null) {
+            return saveImageToExternalStorage(selectedImage!!)
+        }
+        return true
+    }
+
+
+    private fun saveImageToExternalStorage(imageUri: Uri): Boolean {
+
+        return try {
+            val inputStream = this.contentResolver.openInputStream(imageUri)
+            val directory =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            if (!directory.exists()) {
+                directory.mkdirs()
+            }
+
+            val mimeType = this.contentResolver.getType(imageUri)
+            val extension = when (mimeType) {
+                "image/jpeg" -> "jpg"
+                "image/png" -> "png"
+                else -> "jpg"
+            }
+
+            val fileName = "image_${System.currentTimeMillis()}.$extension"
+            imageName = fileName
+            val file = File(directory, fileName)
+            val outputStream = FileOutputStream(file)
+
+            inputStream?.use { input ->
+                outputStream.use { output ->
+                    input.copyTo(output)
+                }
+            }
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    private fun loadImageWithGlideIfExist() {
+        if (shoppingListOfList!!.getImageList() != null) {
+            val directory =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+            val file: File = directory.resolve(shoppingListOfList!!.getImageList()!!)
+            Log.d("file", file.name.toString())
+            Log.d("file", file.absolutePath.toString())
+            Glide.with(this)
+                .load(file)
+                .centerCrop()
+                .placeholder(android.R.drawable.ic_menu_report_image)
+                .into(binding.listImageImageView)
+        }
     }
 }

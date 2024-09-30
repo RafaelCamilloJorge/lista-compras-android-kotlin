@@ -1,12 +1,16 @@
 package com.example.listadecompras.feature.shopping_lists
 
+import android.content.Context
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ListOfListBinding
 import com.example.listadecompras.presentation.ShoppingListOfList
+import java.io.File
 
 class ShoppingListAdapter(
     private val items: List<ShoppingListOfList>,
@@ -29,11 +33,11 @@ class ShoppingListAdapter(
         val item = shoppingListOfList[position]
         with(holder.binding) {
             if (item.image != null) {
-                Glide.with(holder.itemView.context)
-                    .load(item.image)
-                    .centerCrop()
-                    .placeholder(android.R.drawable.ic_menu_report_image)
-                    .into(itemImage)
+                loadImageWithGlideIfExist(
+                    item.image!!,
+                    holder.binding.root.context,
+                    holder.binding.itemImage
+                )
             }
             itemTitle.text = item.name
 
@@ -62,4 +66,18 @@ class ShoppingListAdapter(
         notifyDataSetChanged()
     }
 
+    private fun loadImageWithGlideIfExist(image: String, context: Context, imageView: ImageView) {
+        val directory =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+        val file: File = directory.resolve(image)
+        Log.d("file", file.name.toString())
+        Log.d("file", file.absolutePath.toString())
+        Glide.with(context)
+            .load(file)
+            .centerCrop()
+            .placeholder(android.R.drawable.ic_menu_report_image)
+            .into(imageView)
+
+    }
 }

@@ -94,7 +94,7 @@ class ShoppingListActivity : ComponentActivity() {
 
     private fun editItem(list: ShoppingListOfList) {
         val intent = Intent(this, ManageListActivity::class.java)
-        intent.putExtra("idList", list.getIdList())
+        intent.putExtra("listData", list)
         startActivityForResult(intent, 1)
     }
 

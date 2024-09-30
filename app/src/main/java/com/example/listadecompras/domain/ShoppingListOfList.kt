@@ -2,6 +2,7 @@ package com.example.listadecompras.presentation
 
 import ShoppingItem
 import android.net.Uri
+import androidx.core.net.toUri
 import java.io.Serializable
 
 class ShoppingListOfList(
@@ -30,7 +31,7 @@ class ShoppingListOfList(
         return id
     }
 
-    fun getImageList(): Uri? {
-        return image?.let { Uri.parse(it) }
+    fun getImageList(): String? {
+        return image
     }
 }

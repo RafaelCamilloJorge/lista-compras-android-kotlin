@@ -67,14 +67,8 @@ class ShoppingListAdapter(
     }
 
     private fun loadImageWithGlideIfExist(image: String, context: Context, imageView: ImageView) {
-        val directory =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-
-        val file: File = directory.resolve(image)
-        Log.d("file", file.name.toString())
-        Log.d("file", file.absolutePath.toString())
         Glide.with(context)
-            .load(file)
+            .load(image)
             .centerCrop()
             .placeholder(android.R.drawable.ic_menu_report_image)
             .into(imageView)

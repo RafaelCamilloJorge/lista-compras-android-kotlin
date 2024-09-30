@@ -3,7 +3,6 @@ package com.example.listadecompras.feature.manage_list
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -16,8 +15,6 @@ import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ActivityManageListBinding
 import com.example.listadecompras.presentation.ShoppingListOfList
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 class ManageListActivity : AppCompatActivity() {
 
@@ -62,38 +59,41 @@ class ManageListActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
                 selectedImage = data?.data
-                binding.listImageImageView.setImageURI(selectedImage)
+                selectedImage?.let { uri ->
+                    Glide.with(this)
+                        .load(uri)
+                        .centerCrop()
+                        .placeholder(android.R.drawable.ic_menu_report_image)
+                        .into(binding.listImageImageView)
+                }
+                imageName = selectedImage.toString()
             }
         }
 
     private fun createNewList() {
         val listName = binding.nameField.text.toString()
 
-        if (saveImageIfNecessary()) {
-            val newList = ShoppingListOfList(
-                id = manageListViewModel.getNextId(),
-                name = listName.first().uppercase() + listName.substring(1),
-                image = imageName,
-                shoppingList = mutableListOf()
-            )
-            manageListViewModel.add(newList)
-            goBack()
-        }
+        val newList = ShoppingListOfList(
+            id = manageListViewModel.getNextId(),
+            name = listName.first().uppercase() + listName.substring(1),
+            image = imageName,
+            shoppingList = mutableListOf()
+        )
+        manageListViewModel.add(newList)
+        goBack()
     }
 
     private fun editList(list: ShoppingListOfList) {
         val listName = binding.nameField.text.toString()
 
-        if (saveImageIfNecessary()) {
-            val newList = ShoppingListOfList(
-                id = list.getIdList(),
-                name = listName.first().uppercase() + listName.substring(1),
-                image = imageName,
-                shoppingList = list.getItems()
-            )
-            manageListViewModel.update(list.getIdList(), newList)
-            goBack()
-        }
+        val newList = ShoppingListOfList(
+            id = list.getIdList(),
+            name = listName.first().uppercase() + listName.substring(1),
+            image = imageName ?: list.image,
+            shoppingList = list.getItems()
+        )
+        manageListViewModel.update(list.getIdList(), newList)
+        goBack()
     }
 
     private fun goBack() {
@@ -115,58 +115,10 @@ class ManageListActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveImageIfNecessary(): Boolean {
-        if (selectedImage != null) {
-            return saveImageToExternalStorage(selectedImage!!)
-        }
-        return true
-    }
-
-
-    private fun saveImageToExternalStorage(imageUri: Uri): Boolean {
-
-        return try {
-            val inputStream = this.contentResolver.openInputStream(imageUri)
-            val directory =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            if (!directory.exists()) {
-                directory.mkdirs()
-            }
-
-            val mimeType = this.contentResolver.getType(imageUri)
-            val extension = when (mimeType) {
-                "image/jpeg" -> "jpg"
-                "image/png" -> "png"
-                else -> "jpg"
-            }
-
-            val fileName = "image_${System.currentTimeMillis()}.$extension"
-            imageName = fileName
-            val file = File(directory, fileName)
-            val outputStream = FileOutputStream(file)
-
-            inputStream?.use { input ->
-                outputStream.use { output ->
-                    input.copyTo(output)
-                }
-            }
-            true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        }
-    }
-
     private fun loadImageWithGlideIfExist() {
-        if (shoppingListOfList!!.getImageList() != null) {
-            val directory =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-
-            val file: File = directory.resolve(shoppingListOfList!!.getImageList()!!)
-            Log.d("file", file.name.toString())
-            Log.d("file", file.absolutePath.toString())
+        shoppingListOfList?.image?.let { imagePath ->
             Glide.with(this)
-                .load(file)
+                .load(Uri.parse(imagePath))
                 .centerCrop()
                 .placeholder(android.R.drawable.ic_menu_report_image)
                 .into(binding.listImageImageView)

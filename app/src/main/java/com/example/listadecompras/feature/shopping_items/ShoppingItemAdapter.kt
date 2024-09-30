@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ListOfItemBinding
 
 
@@ -32,10 +33,15 @@ class ShoppingItemAdapter(
             itemImage.setImageResource(item.image)
             itemCheckbox.isChecked = item.marked
 
+            if (item.marked) {
+                root.setBackgroundColor(root.context.getColor(R.color.light_gray))
+            } else {
+                root.setBackgroundColor(root.context.getColor(android.R.color.transparent))
+            }
+
             itemCheckbox.setOnClickListener {
                 item.marked = itemCheckbox.isChecked
-                Toast.makeText(root.context, "Item marcado como comprado", Toast.LENGTH_SHORT)
-                    .show()
+
                 updateList()
             }
 

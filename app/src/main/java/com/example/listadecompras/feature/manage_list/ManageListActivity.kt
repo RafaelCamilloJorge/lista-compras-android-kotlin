@@ -103,13 +103,15 @@ class ManageListActivity : AppCompatActivity() {
     }
 
     private fun getDataIntentForEditList() {
-        val list = intent.getSerializableExtra("listData") as ShoppingListOfList?
-        if (list != null) {
-            shoppingListOfList = list
-            binding.nameField.setText(list.getNameList())
-            binding.saveButton.text = "Atualizar"
-            binding.titleTextView.text = "Editar lista"
-            loadImageWithGlideIfExist()
+        val id = intent.getIntExtra("listId", -1)
+        if (id != -1) {
+            shoppingListOfList = manageListViewModel.getById(id)
+            shoppingListOfList?.let {
+                binding.nameField.setText(shoppingListOfList!!.getNameList())
+                binding.saveButton.text = "Atualizar"
+                binding.titleTextView.text = "Editar lista"
+                loadImageWithGlideIfExist()
+            }
         }
     }
 

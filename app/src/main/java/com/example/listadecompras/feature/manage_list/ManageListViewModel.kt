@@ -12,7 +12,7 @@ class ManageListViewModel(
         response.fold(onSuccess = {}, onError = { data -> println(data.messageError()) })
     }
 
-    fun getById(id: Int): ShoppingListOfList {
+    fun getById(id: Int): ShoppingListOfList? {
         val response = listRepository.getListsOfListById(id)
         return response.fold(
             onSuccess = { data -> data },

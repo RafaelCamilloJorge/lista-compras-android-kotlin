@@ -42,9 +42,8 @@ class ManageListActivity : AppCompatActivity() {
 
             list = manageListViewModel.getById(idList)
             binding.nameField.setText(list.getNameList())
-            Glide.with(this)
-                .load(list.getImageList())
-                .into(binding.listImageImageView)
+
+           
         }
 
         binding.fab.setOnClickListener {

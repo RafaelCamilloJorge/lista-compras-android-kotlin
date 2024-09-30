@@ -23,7 +23,7 @@ class ShoppingItemActivity : ComponentActivity() {
         binding = ActivityShoppingItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        idList = intent.getIntExtra("idList", 0)
+        idList = intent.getIntExtra("idList", -1)
         val title = intent.getStringExtra("title")
 
         items = getData(idList).toMutableList()

@@ -37,7 +37,7 @@ class ManageListViewModel(
     fun getNextId(): Int {
         val response = listRepository.getAllListOfLists()
         return response.fold(
-            onSuccess = { data -> data.size },
+            onSuccess = { data -> data.size + 1 },
             onError = { data -> 0 }
         )
     }

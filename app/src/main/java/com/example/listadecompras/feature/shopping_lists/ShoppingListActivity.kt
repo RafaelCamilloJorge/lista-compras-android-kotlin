@@ -69,22 +69,7 @@ class ShoppingListActivity : ComponentActivity() {
     }
 
     private fun mock() {
-        val ShoppingListOfList = ShoppingListOfList(
-            id = 1,
-            name = "Lista de Compras",
-            image = null,
-            shoppingList = mutableListOf(
-                ShoppingItem(
-                    id = 1,
-                    name = "Arroz",
-                    quantity = 1,
-                    unity = UnitOfMeasure.kilo,
-                    image = Category.fish.getIcon(),
-                    category = Category.fish
-                ),
-            )
-        )
-        shoppingListViewModel.add(ShoppingListOfList)
+
     }
 
     private fun onListItemClicked(listOfList: ShoppingListOfList) {

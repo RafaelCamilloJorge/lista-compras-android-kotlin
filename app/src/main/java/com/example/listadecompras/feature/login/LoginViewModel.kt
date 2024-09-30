@@ -14,7 +14,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     ) {
         val result = loginRepository.login(email, password)
         result.fold(
-            onSuccess = { data -> onSuccess(data) },
+            onSuccess = { onSuccess(it) },
             onError = {
                 onError(it.message ?: "Erro ao tentar logar")
             })

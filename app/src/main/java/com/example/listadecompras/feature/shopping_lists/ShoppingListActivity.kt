@@ -1,21 +1,19 @@
 package com.example.listadecompras.feature.shopping_lists
 
-import Category
-import ShoppingItem
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.listadecompras.databinding.ActivityShoppingListBinding
-import com.example.listadecompras.feature.login.MainActivity
 import com.example.listadecompras.feature.manage_list.ManageListActivity
 import com.example.listadecompras.feature.shopping_items.ShoppingItemActivity
 import com.example.listadecompras.presentation.ShoppingListOfList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ShoppingListActivity : ComponentActivity() {
+class ShoppingListActivity : ComponentActivity(), ShoppingListContracts.View {
     private lateinit var binding: ActivityShoppingListBinding
     private val shoppingListViewModel: ShoppingListViewModel by viewModel()
     private var shoppingListOfList = mutableListOf<ShoppingListOfList>()
@@ -26,11 +24,9 @@ class ShoppingListActivity : ComponentActivity() {
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mock()
-
         getData()
 
-        adapter = ShoppingListAdapter(shoppingListOfList, ::onListItemClicked, ::onLongClick)
+        adapter = ShoppingListAdapter(shoppingListOfList, ::navigateToListView, ::onLongClick)
         val layoutManager = GridLayoutManager(this, 2)
 
         binding.recyclerView.adapter = adapter
@@ -52,6 +48,34 @@ class ShoppingListActivity : ComponentActivity() {
         }
     }
 
+    private fun getData() {
+        shoppingListViewModel.getAllLists(
+            onSuccess = { data -> shoppingListOfList = data.toMutableList() },
+            onError = { error -> showError(error) }
+        )
+    }
+
+    private fun onLongClick(listOfList: ShoppingListOfList) {
+        val options = arrayOf("Editar", "Excluir")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Lista: ${listOfList.getNameList()}").setItems(options) { dialog, which ->
+            when (which) {
+                0 -> navigateToEditList(listOfList)
+                1 -> deleteItem(listOfList)
+            }
+        }
+        builder.show()
+    }
+
+    private fun deleteItem(item: ShoppingListOfList) {
+        shoppingListViewModel.removeListOfList(item.id, onSuccess = {
+            getData()
+            adapter.updateList(shoppingListOfList)
+        }, onError = {
+            showError(it)
+        })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -60,46 +84,20 @@ class ShoppingListActivity : ComponentActivity() {
         }
     }
 
-    private fun getData() {
-        val result = shoppingListViewModel.getAllLists()
-        result.fold(
-            onSuccess = { data -> shoppingListOfList = data.toMutableList() },
-            onError = { error -> println(error.messageError()) })
+    override fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun mock() {
-
-    }
-
-    private fun onListItemClicked(listOfList: ShoppingListOfList) {
-        val intent = Intent(this, ShoppingItemActivity::class.java)
-        intent.putExtra("title", listOfList.getNameList())
-        intent.putExtra("idList", listOfList.getIdList())
-        startActivity(intent)
-    }
-
-    private fun onLongClick(listOfList: ShoppingListOfList) {
-        val options = arrayOf("Editar", "Excluir")
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Lista: ${listOfList.getNameList()}")
-            .setItems(options) { dialog, which ->
-                when (which) {
-                    0 -> editItem(listOfList)
-                    1 -> deleteItem(listOfList)
-                }
-            }
-        builder.show()
-    }
-
-    private fun editItem(list: ShoppingListOfList) {
+    override fun navigateToEditList(list: ShoppingListOfList) {
         val intent = Intent(this, ManageListActivity::class.java)
         intent.putExtra("listId", list.getIdList())
         startActivityForResult(intent, 1)
     }
 
-    private fun deleteItem(item: ShoppingListOfList) {
-        shoppingListViewModel.removeListOfList(item.id)
-        getData()
-        adapter.updateList(shoppingListOfList)
+    override fun navigateToListView(listOfList: ShoppingListOfList) {
+        val intent = Intent(this, ShoppingItemActivity::class.java)
+        intent.putExtra("title", listOfList.getNameList())
+        intent.putExtra("idList", listOfList.getIdList())
+        startActivity(intent)
     }
 }

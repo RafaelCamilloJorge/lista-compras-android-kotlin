@@ -1,8 +1,6 @@
 package com.example.listadecompras.presentation
 
 import ShoppingItem
-import android.net.Uri
-import androidx.core.net.toUri
 import java.io.Serializable
 
 class ShoppingListOfList(

@@ -1,12 +1,22 @@
 package com.example.listadecompras.feature.login
 
-import OnResult
 import androidx.lifecycle.ViewModel
 import com.example.listadecompras.repositories.LoginRepository
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel(),
+    LoginContracts.ViewModel {
 
-    fun login(email: String, password: String): OnResult<Boolean> {
-        return loginRepository.login(email, password)
+    override fun login(
+        email: String,
+        password: String,
+        onSuccess: (Boolean) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val result = loginRepository.login(email, password)
+        result.fold(
+            onSuccess = { data -> onSuccess(data) },
+            onError = {
+                onError(it.message ?: "Erro ao tentar logar")
+            })
     }
 }

@@ -46,6 +46,10 @@ class ShoppingItemActivity : ComponentActivity() {
             adapter.search(searchText)
         }
 
+        binding.exitButton.setOnClickListener {
+            finish()
+        }
+
 
     }
 

@@ -1,34 +1,49 @@
 package com.example.listadecompras.feature.shopping_lists
 
-import OnResult
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.listadecompras.presentation.ShoppingListOfList
 import com.example.listadecompras.repositories.ListRepository
 
-class ShoppingListViewModel(private val listRepository: ListRepository) : ViewModel() {
+class ShoppingListViewModel(private val listRepository: ListRepository) : ViewModel(),
+    ShoppingListContracts.ViewModel {
 
-    fun getAllLists(): OnResult<List<ShoppingListOfList>> {
-        return listRepository.getAllListOfLists();
+    override fun getAllLists(
+        onSuccess: (List<ShoppingListOfList>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val result = listRepository.getAllListOfLists()
+        result.fold(
+            onSuccess = { onSuccess(it) },
+            onError = {
+                onError(it.messageError())
+            })
     }
 
-    fun searchList(name: String): OnResult<List<ShoppingListOfList>> {
-        return listRepository.getListsOfListByName(name)
+    override fun searchList(
+        name: String,
+        onSuccess: (List<ShoppingListOfList>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val result = listRepository.getListsOfListByName(name)
+        result.fold(
+            onSuccess = { onSuccess(it) },
+            onError = {
+                onError(it.messageError())
+            }
+        )
     }
 
-    fun removeListOfList(id: Int) {
-        listRepository.removeListOfListById(id)
+    override fun removeListOfList(id: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val result = listRepository.removeListOfListById(id)
+        result.fold(
+            onSuccess = { onSuccess() },
+            onError = {
+                onError(it.messageError())
+            })
     }
 
-    //temporário essa fun
-    fun add(item: ShoppingListOfList) {
-        listRepository.createShoppingListOfList(item);
-    }
-
-    fun openList(id: Int) {
-        println("Abrir lista com ID$id")
-    }
-
-    fun logout() {
-        println("Logout")
+    override fun logout() {
+        Log.d("ShoppingListViewModel.logout", "Nem te conto, você tá na memória...")
     }
 }

@@ -38,6 +38,8 @@ class ShoppingListAdapter(
                     holder.binding.root.context,
                     holder.binding.itemImage
                 )
+            } else {
+                Glide.with(holder.binding.root.context).clear(this.itemImage)
             }
             itemTitle.text = item.name
 
@@ -65,6 +67,5 @@ class ShoppingListAdapter(
             .centerCrop()
             .placeholder(android.R.drawable.ic_menu_report_image)
             .into(imageView)
-
     }
 }

@@ -14,6 +14,8 @@ class ItemsValidate {
             return "Por favor, preencha o nome"
         } else if (quantity.isEmpty()) {
             return "Por favor, preencha a quantidade"
+        } else if(quantity == "0"){
+            return "A quantidade não pode ser 0"
         } else if (categoryEnum == null) {
             return "Categoria inválida"
         } else if (unitEnum == null) {

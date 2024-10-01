@@ -119,12 +119,12 @@ class ManageListActivity : AppCompatActivity(), ManageListContracts.View {
         val id = intent.getIntExtra("listId", -1)
         if (id != -1) {
             manageListViewModel.getById(id, onSuccess = {
-                it.let {
-                    binding.nameField.setText(shoppingListOfList!!.getNameList())
-                    binding.saveButton.text = "Atualizar"
-                    binding.titleTextView.text = "Editar lista"
-                    loadImageWithGlideIfExist()
-                }
+                shoppingListOfList = it
+                binding.nameField.setText(shoppingListOfList!!.getNameList())
+                binding.saveButton.text = "Atualizar"
+                binding.titleTextView.text = "Editar lista"
+                loadImageWithGlideIfExist()
+
             }, onError = { showError(it) })
         }
     }

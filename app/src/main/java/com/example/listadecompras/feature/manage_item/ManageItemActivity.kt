@@ -3,7 +3,6 @@ package com.example.listadecompras.feature.manage_item
 import Category
 import ShoppingItem
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -11,12 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.listadecompras.R
+import com.example.listadecompras.commons.validates.ItemsValidate
 import com.example.listadecompras.databinding.ActivityManageItemBinding
-import com.example.listadecompras.databinding.ActivityManageListBinding
-import com.example.listadecompras.feature.manage_list.ManageListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ManageItemActivity : AppCompatActivity() {
+class ManageItemActivity : AppCompatActivity(), ManageItemContracts.View {
 
     private lateinit var binding: ActivityManageItemBinding
     private val manageItemViewModel: ManageItemViewModel by viewModel()
@@ -35,113 +33,123 @@ class ManageItemActivity : AppCompatActivity() {
         val idList = intent.getIntExtra("idList", -1)
         val idItem = intent.getIntExtra("idItem", -1)
 
-        if(idItem != -1){
+        if (idItem != -1) {
             binding.titleTextView.text = "Editar item"
             binding.saveButton.text = "Atualizar"
 
-            val item = manageItemViewModel.getItemById(idList, idItem)
-            binding.nameField.setText(item.name)
-            binding.quantityField.setText(item.quantity.toString())
-            binding.categorySpinner.setSelection(Category.values().indexOf(item.category))
-            binding.unitSpinner.setSelection(item.unity.ordinal)
+            manageItemViewModel.getItemById(idList, idItem, onSuccess = {
+                binding.nameField.setText(it.name)
+                binding.quantityField.setText(it.quantity.toString())
+                binding.categorySpinner.setSelection(Category.values().indexOf(it.category))
+                binding.unitSpinner.setSelection(it.unity.ordinal)
+            }, onError = {
+                showError(it)
+            })
         }
 
         binding.saveButton.setOnClickListener {
-            if(idItem != -1){
-                if (updateItem(idList, idItem)) {
-                    val resultIntent = Intent()
-                    setResult(RESULT_OK, resultIntent)
-                    finish()
-                }
-            } else if (addItem(idList)) {
-                val resultIntent = Intent()
-                setResult(RESULT_OK, resultIntent)
-                finish()
+            if (idItem != -1) {
+                validateToUpdateItem(idList, idItem)
+            } else {
+                validateToAddItem(idList)
             }
         }
-
-
     }
 
-    fun addItem(idList: Int): Boolean {
-        if (!validateFields()) {
-            return false
-        }
-
+    private fun validateToAddItem(idList: Int) {
         val itemName = binding.nameField.text.toString()
         val itemQuantity = binding.quantityField.text.toString().toInt()
         val itemCategory = binding.categorySpinner.selectedItem.toString()
         val itemUnit = binding.unitSpinner.selectedItem.toString()
 
-        val categoryEnum = Category.values().firstOrNull { it.getName() == itemCategory }
-        val unitEnum = UnitOfMeasure.values().firstOrNull { it.getName() == itemUnit }
+        val categoryEnum = Category.entries.firstOrNull { it.getName() == itemCategory }
+        val unitEnum = UnitOfMeasure.entries.firstOrNull { it.getName() == itemUnit }
 
-        if (categoryEnum == null || unitEnum == null) {
-            Toast.makeText(this, "Erro: Categoria ou unidade inválida.", Toast.LENGTH_SHORT)
-                .show()
-            return false
+        val error: String? =
+            ItemsValidate().validateFieldsItem(
+                itemName,
+                itemQuantity.toString(),
+                categoryEnum,
+                unitEnum
+            )
+
+        if (error != null) {
+            showError(error)
+        } else {
+            manageItemViewModel.getNextId(idList, onSuccess = {
+                val item = ShoppingItem(
+                    id = it,
+                    name = itemName.first().uppercase() + itemName.substring(1),
+                    image = categoryEnum!!.getIcon(),
+                    quantity = itemQuantity,
+                    unity = unitEnum!!,
+                    category = categoryEnum
+                )
+                create(item, idList)
+            }, onError = {
+                showError(it)
+            })
         }
-
-        val item = ShoppingItem(
-            id = manageItemViewModel.getNextId(idList) + 1,
-            name = itemName.first().uppercase() + itemName.substring(1),
-            image = categoryEnum.getIcon(),
-            quantity = itemQuantity,
-            unity = unitEnum,
-            category = categoryEnum
-        )
-        manageItemViewModel.add(item, idList)
-        return true
     }
 
-    fun updateItem(idList: Int, idItem: Int): Boolean {
-        if (!validateFields()) {
-            return false
-        }
+    private fun create(item: ShoppingItem, idList: Int) {
+        manageItemViewModel.add(item, idList, onSuccess = {
+            goBack()
+            showError("Item adicionado!")
+        }, onError = {
+            showError(it)
+        })
+    }
 
+    private fun validateToUpdateItem(idList: Int, idItem: Int) {
         val itemName = binding.nameField.text.toString()
         val itemQuantity = binding.quantityField.text.toString().toInt()
         val itemCategory = binding.categorySpinner.selectedItem.toString()
         val itemUnit = binding.unitSpinner.selectedItem.toString()
 
-        val categoryEnum = Category.values().firstOrNull { it.getName() == itemCategory }
-        val unitEnum = UnitOfMeasure.values().firstOrNull { it.getName() == itemUnit }
+        val categoryEnum = Category.entries.firstOrNull { it.getName() == itemCategory }
+        val unitEnum = UnitOfMeasure.entries.firstOrNull { it.getName() == itemUnit }
 
-        if (categoryEnum == null || unitEnum == null) {
-            Toast.makeText(this, "Erro: Categoria ou unidade inválida.", Toast.LENGTH_SHORT)
-                .show()
-            return false
+        val error: String? =
+            ItemsValidate().validateFieldsItem(
+                itemName,
+                itemQuantity.toString(),
+                categoryEnum,
+                unitEnum
+            )
+
+        if (error != null) {
+            showError(error)
+            return
+        } else {
+            val updateItem = ShoppingItem(
+                id = idItem,
+                name = itemName.first().uppercase() + itemName.substring(1),
+                image = categoryEnum!!.getIcon(),
+                quantity = itemQuantity,
+                unity = unitEnum!!,
+                category = categoryEnum
+            )
+            validateToUpdateItem(updateItem, idList)
         }
-
-        val updatedItem = ShoppingItem(
-            id = idItem,
-            name = itemName.first().uppercase() + itemName.substring(1),
-            image = categoryEnum.getIcon(),
-            quantity = itemQuantity,
-            unity = unitEnum,
-            category = categoryEnum
-        )
-
-        manageItemViewModel.update(idList, idItem, updatedItem)
-        return true
-
     }
 
+    private fun validateToUpdateItem(newItem: ShoppingItem, idList: Int) {
+        manageItemViewModel.update(idList, newItem.id, newItem, onSuccess = {
+            goBack()
+        }, onError = {
+            showError(it)
+        })
+    }
 
-    fun validateFields(): Boolean {
-        val itemName = binding.nameField.text.toString()
-        val itemQuantity = binding.quantityField.text.toString()
+    override fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 
-        if(itemName.isEmpty()){
-            Toast.makeText(this, "Por favor, preencha o nome", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        else if(itemQuantity.isEmpty()){
-            Toast.makeText(this, "Por favor, preencha a quantidade", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        return true
+    override fun goBack() {
+        val resultIntent = Intent()
+        setResult(RESULT_OK, resultIntent)
+        finish()
     }
 
 }

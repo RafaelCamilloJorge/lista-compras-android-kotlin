@@ -10,10 +10,10 @@ class ListRepository : IListRepository {
     private var shoppingListOfLists = mutableListOf<ShoppingListOfList>()
 
     //////////////////lista de listas//////////////////
-    override fun createShoppingListOfList(shoppingListOfList: ShoppingListOfList): OnResult<Nothing> {
+    override fun createShoppingListOfList(shoppingListOfList: ShoppingListOfList): OnResult<Boolean> {
         try {
             shoppingListOfLists.add(shoppingListOfList)
-            return OnResult.Success(null) as Nothing
+            return OnResult.Success(true)
         } catch (e: Exception) {
             return OnResult.Error(CustomError("Erro ao criar a lista"))
         }
@@ -54,12 +54,12 @@ class ListRepository : IListRepository {
         }
     }
 
-    override fun removeListOfListById(id: Int): OnResult<Nothing> {
+    override fun removeListOfListById(id: Int): OnResult<Boolean> {
         try {
             shoppingListOfLists.forEach {
                 if (it.id == id) {
                     shoppingListOfLists.remove(it)
-                    return OnResult.Success(null) as Nothing;
+                    return OnResult.Success(true)
                 }
             }
             return OnResult.Error(CustomError("Lista não encontrada"))
@@ -68,13 +68,13 @@ class ListRepository : IListRepository {
         }
     }
 
-    override fun updateShoppingList(id: Int, newList: ShoppingListOfList): OnResult<Nothing> {
+    override fun updateShoppingList(id: Int, newList: ShoppingListOfList): OnResult<Boolean> {
         try {
             shoppingListOfLists.forEach {
                 if (it.id == id) {
                     val index: Int = shoppingListOfLists.indexOf(it)
                     shoppingListOfLists[index] = newList
-                    return OnResult.Success(null) as Nothing
+                    return OnResult.Success(true)
                 }
             }
             return OnResult.Success(null) as Nothing
@@ -84,12 +84,12 @@ class ListRepository : IListRepository {
     }
 
     //////////////////somente itens//////////////////
-    override fun addItemInList(item: ShoppingItem, idList: Int): OnResult<Nothing> {
+    override fun addItemInList(item: ShoppingItem, idList: Int): OnResult<Boolean> {
         try {
             shoppingListOfLists.forEach {
                 if (it.id == idList) {
                     it.shoppingList.add(item)
-                    return OnResult.Success(null) as Nothing
+                    return OnResult.Success(true)
                 }
             }
             return OnResult.Error(CustomError("Erro ao adicionar o item"))
@@ -128,14 +128,14 @@ class ListRepository : IListRepository {
         }
     }
 
-    override fun removeItemById(idList: Int, idItem: Int): OnResult<Nothing> {
+    override fun removeItemById(idList: Int, idItem: Int): OnResult<Boolean> {
         try {
             shoppingListOfLists.forEach {
                 if (it.id == idList) {
                     for (item in it.shoppingList) {
                         if (item.id == idItem) {
                             it.shoppingList.remove(item)
-                            return OnResult.Success(null) as Nothing
+                            return OnResult.Success(true)
                         }
                     }
                 }
@@ -146,14 +146,14 @@ class ListRepository : IListRepository {
         }
     }
 
-    override fun updateItem(idList: Int, idItem: Int, newItem: ShoppingItem): OnResult<Nothing> {
+    override fun updateItem(idList: Int, idItem: Int, newItem: ShoppingItem): OnResult<Boolean> {
         try {
             shoppingListOfLists.forEach {
                 if (it.id == idList) {
                     for (item in it.shoppingList) {
                         if (item.id == idItem) {
                             it.shoppingList[it.shoppingList.indexOf(item)] = newItem
-                            return OnResult.Success(null) as Nothing
+                            return OnResult.Success(true)
                         }
                     }
                 }

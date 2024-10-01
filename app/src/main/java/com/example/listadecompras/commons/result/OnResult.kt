@@ -14,7 +14,7 @@ sealed class OnResult<T> {
     }
 }
 
-class CustomError(var error: String?) : Exception(error) {
+class CustomError(private var error: String?) : Exception(error) {
     fun messageError(): String {
         return error ?: this.message ?: "Erro desconhecido"
     }

@@ -4,17 +4,30 @@ import ShoppingItem
 import androidx.lifecycle.ViewModel
 import com.example.listadecompras.repositories.ListRepository
 
-class ShoppingItemViewModel(private val listRepository: ListRepository) : ViewModel() {
-    fun getAllItems(idList: Int): List<ShoppingItem> {
-        var response = listRepository.getAllItemsOfList(idList)
+class ShoppingItemViewModel(private val listRepository: ListRepository) : ViewModel(),
+    ShoppingItemContracts.ViewModel {
+    override fun getAllItems(
+        idList: Int,
+        onSuccess: (List<ShoppingItem>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val response = listRepository.getAllItemsOfList(idList)
         return response.fold(
-            onSuccess = { data -> data },
-            onError = { data -> emptyList() }
+            onSuccess = { data -> onSuccess(data) },
+            onError = { data -> onError(data.messageError()) }
         )
     }
 
-    fun deleteItem(idList: Int, idItem: Int) {
-        listRepository.removeItemById(idList, idItem)
-
+    override fun deleteItem(
+        idList: Int,
+        idItem: Int,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val response = listRepository.removeItemById(idList, idItem)
+        return response.fold(
+            onSuccess = { onSuccess() },
+            onError = { data -> onError(data.messageError()) }
+        )
     }
 }

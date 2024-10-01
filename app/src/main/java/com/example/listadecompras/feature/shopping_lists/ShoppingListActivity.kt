@@ -38,8 +38,10 @@ class ShoppingListActivity : ComponentActivity(), ShoppingListContracts.View {
         }
 
         binding.searchField.addTextChangedListener { text ->
-            val searchText = text.toString()
-            adapter.search(searchText)
+            shoppingListViewModel.searchList(
+                text.toString(),
+                onSuccess = { data -> adapter.updateList(data) },
+                onError = { error -> showError(error) })
         }
 
         binding.exitButton.setOnClickListener {

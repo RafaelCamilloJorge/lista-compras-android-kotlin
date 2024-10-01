@@ -53,13 +53,6 @@ class ShoppingListAdapter(
 
     override fun getItemCount(): Int = shoppingListOfList.size
 
-    fun search(query: String) {
-        shoppingListOfList.clear()
-        shoppingListOfList.addAll(items.filter { it.name.startsWith(query, true) }
-            .sortedBy { it.name })
-        notifyDataSetChanged()
-    }
-
     fun updateList(newList: List<ShoppingListOfList>) {
         shoppingListOfList.clear()
         shoppingListOfList.addAll(newList.sortedBy { it.name.lowercase() })

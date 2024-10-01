@@ -28,10 +28,10 @@ class ListRepository : IListRepository {
     }
 
     override fun getListsOfListByName(name: String): OnResult<List<ShoppingListOfList>> {
-        var list = mutableListOf<ShoppingListOfList>()
+        val list = mutableListOf<ShoppingListOfList>()
         try {
             shoppingListOfLists.forEach {
-                if (it.name.contains(name)) {
+                if (it.name.lowercase().contains(name)) {
                     list.add(it)
                 }
             }

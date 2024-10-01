@@ -3,6 +3,7 @@ package com.example.listadecompras.feature.shopping_items
 import ShoppingItem
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
@@ -11,7 +12,7 @@ import com.example.listadecompras.databinding.ActivityShoppingItemBinding
 import com.example.listadecompras.feature.manage_item.ManageItemActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ShoppingItemActivity : ComponentActivity() {
+class ShoppingItemActivity : ComponentActivity(), ShoppingItemContracts.View {
     private lateinit var binding: ActivityShoppingItemBinding
     private val shoppingItemViewModel: ShoppingItemViewModel by viewModel()
     private var items = mutableListOf<ShoppingItem>()
@@ -47,10 +48,8 @@ class ShoppingItemActivity : ComponentActivity() {
         }
 
         binding.exitButton.setOnClickListener {
-            finish()
+            goBack()
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -81,12 +80,22 @@ class ShoppingItemActivity : ComponentActivity() {
     }
 
     private fun deleteItem(idItem: Int) {
-        shoppingItemViewModel.deleteItem(idList, idItem)
-        updateList()
+        shoppingItemViewModel.deleteItem(idList, idItem, onSuccess = {
+            updateList()
+        }, onError = {
+            showError(it)
+        })
     }
 
     private fun getData(idList: Int): List<ShoppingItem> {
-        return shoppingItemViewModel.getAllItems(idList)
+        var list = mutableListOf<ShoppingItem>()
+        shoppingItemViewModel.getAllItems(idList, onSuccess = {
+            list = it.toMutableList()
+        }, onError = {
+            showError(it)
+            list = mutableListOf()
+        })
+        return list
     }
 
     private fun updateList() {
@@ -95,6 +104,14 @@ class ShoppingItemActivity : ComponentActivity() {
             items.addAll(it)
             adapter.updateList()
         }
+    }
+
+    override fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun goBack() {
+        finish()
     }
 }
 

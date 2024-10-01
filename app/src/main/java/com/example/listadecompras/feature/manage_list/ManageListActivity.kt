@@ -16,7 +16,7 @@ import com.example.listadecompras.databinding.ActivityManageListBinding
 import com.example.listadecompras.presentation.ShoppingListOfList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ManageListActivity : AppCompatActivity() {
+class ManageListActivity : AppCompatActivity(), ManageListContracts.View {
 
     private lateinit var binding: ActivityManageListBinding
     private var selectedImage: Uri? = null
@@ -47,7 +47,7 @@ class ManageListActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             val listName = binding.nameField.text.toString()
             if (listName.isNotEmpty()) {
-                if (shoppingListOfList != null) editList(shoppingListOfList!!) else createNewList()
+                if (shoppingListOfList != null) editList(shoppingListOfList!!) else getIdToCreateNewList()
             } else {
                 Toast.makeText(this, "Por favor, preencha o nome", Toast.LENGTH_SHORT).show()
             }
@@ -70,17 +70,26 @@ class ManageListActivity : AppCompatActivity() {
             }
         }
 
-    private fun createNewList() {
-        val listName = binding.nameField.text.toString()
+    private fun getIdToCreateNewList() {
+        manageListViewModel.getNextId(onSuccess = {
+            createNewList(it)
+        }, onError = {
+            showError(it)
+        })
+    }
 
+    private fun createNewList(id: Int) {
+        val listName = binding.nameField.text.toString()
         val newList = ShoppingListOfList(
-            id = manageListViewModel.getNextId(),
+            id = id,
             name = listName.first().uppercase() + listName.substring(1),
             image = imageName,
             shoppingList = mutableListOf()
         )
-        manageListViewModel.add(newList)
-        goBack()
+        manageListViewModel.add(newList, onSuccess = {
+            goBack()
+            showError("Lista criada!")
+        }, onError = { showError(it) })
     }
 
     private fun editList(list: ShoppingListOfList) {
@@ -92,11 +101,15 @@ class ManageListActivity : AppCompatActivity() {
             image = imageName ?: list.image,
             shoppingList = list.getItems()
         )
-        manageListViewModel.update(list.getIdList(), newList)
-        goBack()
+        manageListViewModel.update(list.getIdList(), newList, onSuccess = {
+            goBack()
+            showError("Lista atualizada!")
+        }, onError = {
+            showError(it)
+        })
     }
 
-    private fun goBack() {
+    override fun goBack() {
         val resultIntent = Intent()
         setResult(RESULT_OK, resultIntent)
         finish()
@@ -105,13 +118,14 @@ class ManageListActivity : AppCompatActivity() {
     private fun getDataIntentForEditList() {
         val id = intent.getIntExtra("listId", -1)
         if (id != -1) {
-            shoppingListOfList = manageListViewModel.getById(id)
-            shoppingListOfList?.let {
-                binding.nameField.setText(shoppingListOfList!!.getNameList())
-                binding.saveButton.text = "Atualizar"
-                binding.titleTextView.text = "Editar lista"
-                loadImageWithGlideIfExist()
-            }
+            manageListViewModel.getById(id, onSuccess = {
+                it.let {
+                    binding.nameField.setText(shoppingListOfList!!.getNameList())
+                    binding.saveButton.text = "Atualizar"
+                    binding.titleTextView.text = "Editar lista"
+                    loadImageWithGlideIfExist()
+                }
+            }, onError = { showError(it) })
         }
     }
 
@@ -123,5 +137,9 @@ class ManageListActivity : AppCompatActivity() {
                 .placeholder(android.R.drawable.ic_menu_report_image)
                 .into(binding.listImageImageView)
         }
+    }
+
+    override fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

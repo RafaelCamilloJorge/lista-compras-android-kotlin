@@ -6,39 +6,47 @@ import com.example.listadecompras.repositories.ListRepository
 
 class ManageListViewModel(
     private val listRepository: ListRepository
-) : ViewModel() {
-    fun add(newList: ShoppingListOfList) {
+) : ViewModel(), ManageListContracts.ViewModel {
+    override fun add(
+        newList: ShoppingListOfList,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
         val response = listRepository.createShoppingListOfList(newList)
-        response.fold(onSuccess = {}, onError = { data -> println(data.messageError()) })
+        response.fold(
+            onSuccess = { onSuccess() },
+            onError = { data -> onError(data.messageError()) })
     }
 
-    fun getById(id: Int): ShoppingListOfList? {
+    override fun getById(
+        id: Int,
+        onSuccess: (ShoppingListOfList) -> Unit,
+        onError: (String) -> Unit
+    ) {
         val response = listRepository.getListsOfListById(id)
         return response.fold(
-            onSuccess = { data -> data },
-            onError = { throw Exception("Item not found") }
+            onSuccess = { data -> onSuccess(data) },
+            onError = { data -> onError(data.messageError()) }
         )
     }
 
-    fun update(id: Int, newList: ShoppingListOfList) {
+    override fun update(
+        id: Int,
+        newList: ShoppingListOfList,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
         val response = listRepository.updateShoppingList(id, newList)
         response.fold(
-            onSuccess = { println("Editou") },
-            onError = { data -> println(data.messageError()) })
+            onSuccess = { onSuccess() },
+            onError = { data -> onError(data.messageError()) })
     }
 
-    fun delete(id: Int) {
-        val result = listRepository.removeListOfListById(id)
-        result.fold(
-            onSuccess = { println("Removeu") },
-            onError = { data -> println(data.messageError()) })
-    }
-
-    fun getNextId(): Int {
+    override fun getNextId(onSuccess: (Int) -> Unit, onError: (String) -> Unit) {
         val response = listRepository.getAllListOfLists()
         return response.fold(
-            onSuccess = { data -> data.size + 1 },
-            onError = { data -> 0 }
+            onSuccess = { data -> onSuccess(data.size + 1) },
+            onError = { data -> onError(data.messageError()) }
         )
     }
 

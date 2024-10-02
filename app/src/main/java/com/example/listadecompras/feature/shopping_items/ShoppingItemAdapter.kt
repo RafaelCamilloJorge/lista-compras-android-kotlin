@@ -12,7 +12,6 @@ import com.example.listadecompras.databinding.ListOfItemBinding
 class ShoppingItemAdapter(
     private val items: List<ShoppingItem>,
     private val onLongClick: (ShoppingItem) -> Unit
-
 ) : RecyclerView.Adapter<ShoppingItemAdapter.ShoppingItemViewHolder>() {
 
     private var shoppingListOfItem = items.toMutableList()
@@ -33,15 +32,8 @@ class ShoppingItemAdapter(
             itemImage.setImageResource(item.image)
             itemCheckbox.isChecked = item.marked
 
-            if (item.marked) {
-                root.setBackgroundColor(root.context.getColor(R.color.light_gray))
-            } else {
-                root.setBackgroundColor(root.context.getColor(android.R.color.transparent))
-            }
-
             itemCheckbox.setOnClickListener {
                 item.marked = itemCheckbox.isChecked
-
                 updateList()
             }
 
@@ -63,7 +55,7 @@ class ShoppingItemAdapter(
     fun search(query: String) {
         shoppingListOfItem.clear()
         shoppingListOfItem.addAll(items.filter { it.name.startsWith(query, true) }
-            .sortedBy { it.name })
+            .sortedWith(compareBy({ it.marked }, { it.name })))
         notifyDataSetChanged()
     }
 }

@@ -32,6 +32,11 @@ class ShoppingItemAdapter(
             itemImage.setImageResource(item.image)
             itemCheckbox.isChecked = item.marked
 
+            if (item.marked) {
+                root.setBackgroundResource(R.drawable.ripple_list_clicked)
+            } else {
+                root.setBackgroundResource(R.drawable.ripple_list)
+            }
             itemCheckbox.setOnClickListener {
                 item.marked = itemCheckbox.isChecked
                 updateList()

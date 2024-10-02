@@ -58,7 +58,7 @@ class ManageItemActivity : AppCompatActivity(), ManageItemContracts.View {
 
     private fun validateToAddItem(idList: Int) {
         val itemName = binding.nameField.text.toString()
-        val itemQuantity = binding.quantityField.text.toString().toInt()
+        val itemQuantity = binding.quantityField.text.toString()
         val itemCategory = binding.categorySpinner.selectedItem.toString()
         val itemUnit = binding.unitSpinner.selectedItem.toString()
 
@@ -68,7 +68,7 @@ class ManageItemActivity : AppCompatActivity(), ManageItemContracts.View {
         val error: String? =
             ItemsValidate().validateFieldsItem(
                 itemName,
-                itemQuantity.toString(),
+                itemQuantity,
                 categoryEnum,
                 unitEnum
             )
@@ -81,7 +81,7 @@ class ManageItemActivity : AppCompatActivity(), ManageItemContracts.View {
                     id = it,
                     name = itemName.first().uppercase() + itemName.substring(1),
                     image = categoryEnum!!.getIcon(),
-                    quantity = itemQuantity,
+                    quantity = itemQuantity.toInt(),
                     unity = unitEnum!!,
                     category = categoryEnum
                 )

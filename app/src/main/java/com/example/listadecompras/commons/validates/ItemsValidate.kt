@@ -12,7 +12,7 @@ class ItemsValidate {
     ): String? {
         if (name.isEmpty()) {
             return "Por favor, preencha o nome"
-        } else if (quantity.isEmpty()) {
+        } else if (quantity.isEmpty() || quantity.toIntOrNull() == null) {
             return "Por favor, preencha a quantidade"
         } else if (categoryEnum == null) {
             return "Categoria inválida"

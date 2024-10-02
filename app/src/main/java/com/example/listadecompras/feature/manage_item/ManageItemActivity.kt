@@ -1,6 +1,6 @@
 package com.example.listadecompras.feature.manage_item
 
-import Category
+import com.example.listadecompras.utils.Category
 import ShoppingItem
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.listadecompras.R
 import com.example.listadecompras.commons.validates.ItemsValidate
 import com.example.listadecompras.databinding.ActivityManageItemBinding
+import com.example.listadecompras.utils.UnitOfMeasure
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ManageItemActivity : AppCompatActivity(), ManageItemContracts.View {

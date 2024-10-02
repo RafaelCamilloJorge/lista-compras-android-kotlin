@@ -1,6 +1,6 @@
-import java.io.Serializable
+package com.example.listadecompras.utils
 
-enum class UnitOfMeasure : Serializable {
+enum class UnitOfMeasure {
     kilo,
     gram,
     liter,

@@ -1,7 +1,7 @@
 package com.example.listadecompras.commons.validates
 
-import Category
-import UnitOfMeasure
+import com.example.listadecompras.utils.Category
+import com.example.listadecompras.utils.UnitOfMeasure
 
 class ItemsValidate {
     fun validateFieldsItem(

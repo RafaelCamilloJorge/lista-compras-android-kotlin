@@ -3,7 +3,6 @@ package com.example.listadecompras.feature.shopping_items
 import ShoppingItem
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ListOfItemBinding
@@ -33,9 +32,9 @@ class ShoppingItemAdapter(
             itemCheckbox.isChecked = item.marked
 
             if (item.marked) {
-                root.setBackgroundResource(R.drawable.ripple_list_clicked)
+                root.setBackgroundResource(R.drawable.ripple_item_clicked)
             } else {
-                root.setBackgroundResource(R.drawable.ripple_list)
+                root.setBackgroundResource(R.drawable.ripple_item)
             }
             itemCheckbox.setOnClickListener {
                 item.marked = itemCheckbox.isChecked

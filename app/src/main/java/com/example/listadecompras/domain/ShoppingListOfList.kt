@@ -8,7 +8,7 @@ class ShoppingListOfList(
     var name: String,
     var image: String?,
     var shoppingList: MutableList<ShoppingItem>
-) : Serializable {
+) {
     public fun addItem(item: ShoppingItem) {
         shoppingList.add(item)
     }

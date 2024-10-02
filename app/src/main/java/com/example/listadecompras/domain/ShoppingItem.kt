@@ -1,4 +1,5 @@
-import java.io.Serializable
+import com.example.listadecompras.utils.Category
+import com.example.listadecompras.utils.UnitOfMeasure
 
 class ShoppingItem(
     var id: Int,
@@ -8,4 +9,4 @@ class ShoppingItem(
     var unity: UnitOfMeasure,
     var category: Category,
     var marked: Boolean = false
-) : Serializable
+)

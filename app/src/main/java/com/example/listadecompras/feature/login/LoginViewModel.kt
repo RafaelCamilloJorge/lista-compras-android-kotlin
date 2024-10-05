@@ -19,4 +19,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 onError(it.message ?: "Erro ao tentar logar")
             })
     }
+
+    fun logout() {
+        loginRepository.logout()
+    }
 }

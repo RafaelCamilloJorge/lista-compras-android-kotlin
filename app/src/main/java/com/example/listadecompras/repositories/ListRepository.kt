@@ -31,7 +31,7 @@ class ListRepository : IListRepository {
         val list = mutableListOf<ShoppingListOfList>()
         try {
             shoppingListOfLists.forEach {
-                if (it.name.lowercase().contains(name)) {
+                if (it.name.lowercase().startsWith(name.lowercase())) {
                     list.add(it)
                 }
             }
@@ -161,6 +161,15 @@ class ListRepository : IListRepository {
             return OnResult.Error(CustomError("Item não encontrado"))
         } catch (error: Exception) {
             return OnResult.Error(CustomError("Erro ao atualizar o item"))
+        }
+    }
+
+    fun removeAllItemsOfList(): OnResult<Boolean> {
+        try {
+            shoppingListOfLists.clear()
+            return OnResult.Success(null) as Nothing
+        } catch (error: Exception) {
+            return OnResult.Error(CustomError("Erro ao remover os itens"))
         }
     }
 }

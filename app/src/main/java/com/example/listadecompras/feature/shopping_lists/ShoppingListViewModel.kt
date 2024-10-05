@@ -20,6 +20,10 @@ class ShoppingListViewModel(private val listRepository: ListRepository) : ViewMo
             })
     }
 
+    override fun logout() {
+        listRepository.removeAllItemsOfList()
+    }
+
     override fun searchList(
         name: String,
         onSuccess: (List<ShoppingListOfList>) -> Unit,
@@ -41,9 +45,5 @@ class ShoppingListViewModel(private val listRepository: ListRepository) : ViewMo
             onError = {
                 onError(it.messageError())
             })
-    }
-
-    override fun logout() {
-        Log.d("ShoppingListViewModel.logout", "Nem te conto, você tá na memória...")
     }
 }
